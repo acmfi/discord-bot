@@ -21,7 +21,8 @@ Este bot esta desarrollado con la intencion de automatizar y facilitar la gestio
 3. En el project **Development** mover la issue de **To Do** a la columna **In Progress**
 3. Crear una branch en tu copia local del repositorio, como nombra de la branch puedes usar el identificador de la issue (#numero) 
 4. Subir tu codigo al repositorio y cuando hayas acabado de trabajar en el, ir al project **Development** y mover la issue de la columna **In Progress** a **To Review**
-5. Como minimo 1 persona debe revisar el codigo y aprobar la issue para que haga merge a master
+5. Crear una pull request de la branch que implementa la issue a master. 
+6. Como minimo 1 persona debe revisar el codigo y aprobar la pull request para que se pueda realizar el merge a master.
 
 ## Como instalar y iniciar el proyecto
 Una vez hayas clonado el repositorio y suponiendo que cuentas con Python instalado en tu ordenador (puedes descargar la ultima version desde [aqui](https://www.python.org/)) debes seguir los siguientes pasos:
