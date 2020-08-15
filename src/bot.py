@@ -1,7 +1,7 @@
 import discord
 
 client = discord.Client()
-TOKEN = open('token.txt', 'r').read()
+TOKEN = open('src/token.txt', 'r').read()
 
 
 @client.event

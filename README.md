@@ -27,15 +27,15 @@ Este bot esta desarrollado con la intención de automatizar y facilitar la gesti
 ## Como instalar e iniciar el proyecto
 Una vez hayas clonado el repositorio y suponiendo que cuentas con Python instalado en tu ordenador (puedes descargar la última versión desde [aquí](https://www.python.org/)) debes seguir los siguientes pasos:
 
-1. Instalar las dependencias del proyecto listadas en el fichero requirements.txt ejecutando: 
+1. Instalar las dependencias del proyecto usando **pipenv**
 ```
-pip install -r requirements.txt
+pipenv install
 ```
-2. Obtener un token para el bot, lo puedes conseguir [aquí](https://discordapp.com/developers/applications/) y escribir ese token en el fichero token.txt
+2. Obtener un token para el bot, lo puedes conseguir [aquí](https://discordapp.com/developers/applications/) y escribir ese token en el fichero token.txt dentro de la carpeta src/
 3. IMPORTANTE: NO SUBIR EL TOKEN AL REPOSITORIO, EL FICHERO ESTA INCLUIDO EN EL .gitignore
 4. Iniciar el proyecto 
 ```
-python3 src/bot.py
+pipenv run python3 src/bot.py
 ```
 
 
