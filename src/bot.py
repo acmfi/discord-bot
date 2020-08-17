@@ -47,8 +47,8 @@ async def on_message(message):
 
     elif message.content.startswith('$Mano'):
         # Falta comprobar que al author de este mensaje sea Ponente
-        if message.guild.get_role("ID ROL PONENTE") or message.guild.get_role("ID ROL ADMIN") \
-                not in message.author.roles:
+        if message.guild.get_role("ID ROL PONENTE") not in message.author.roles \
+                or message.guild.get_role("ID ROL ADMIN") not in message.author.roles:
             await message.channel.send('No puedes hacer unmute si no eres ponente o admin')
         else:
             await find_user(message).edit(mute=False)
