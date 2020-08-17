@@ -15,14 +15,12 @@ async def on_ready():
 async def on_message(message):
     if message.author == client.user:
         return
-
-    #for(i in blacklist): if i in message.content: print("------------")
+    
     for i in blacklist:
          if(i in message.content.casefold()):            
-            await message.delete()
-            await message.channel.send(message.author.mention + ", debes cuidar tu vocabulario, jovencito")
-            #await message.author.send("El mensaje \n" + message.content + "\nno se ajusta a las normas, la palabra " + i + " está prohibida")
-            await message.author.send("El mensaje \n" + str(""f"```css\n{message.content}```""") + "no se ajusta a las normas, la palabra " + i + " está prohibida")
+            await message.delete() #Delete the message
+            await message.channel.send(message.author.mention + ", debes cuidar tu vocabulario, jovencito")  #Send a message on the same channel
+            await message.author.send("El mensaje \n" + str(""f"```css\n{message.content}```""") + "no se ajusta a las normas, la palabra " + i + " está prohibida") #Send a private message to the user
         
     if message.content.startswith('$hello'):
         await message.channel.send('Hello!')
@@ -31,4 +29,4 @@ async def on_message(message):
 
 client.run(TOKEN)
 
-str("""```css\nThis is some colored Text```""")
+
