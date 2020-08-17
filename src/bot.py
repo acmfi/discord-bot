@@ -26,7 +26,7 @@ async def unban_word(message):
                 if line.strip("\n") != word:
                     file.write( "\n" + line)
         file.close
-        blacklist.append(word)  
+        blacklist.remove(word)  
         await message.channel.send('Palabra descensurada correctamente :)')  
 
     else:await message.channel.send("La palabra no está baneada, por lo que no se ha removido")
