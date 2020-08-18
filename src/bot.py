@@ -3,8 +3,7 @@ import discord
 client = discord.Client()
 TOKEN = open('src/token.txt', 'r').read()
 with open('src/blacklist_insultos.txt', 'r') as f:
-    blacklist = [line.strip().casefold() for line in f]
-
+    blacklist = [line.strip().casefold() for line in f if line.strip().casefold() != ""]
 
 
 async def ban_word(message):
@@ -23,8 +22,8 @@ async def unban_word(message):
     if word in blacklist:     
         with open("src/blacklist_insultos.txt", "w") as file:
             for line in blacklist:
-                if line.strip("\n") != word:
-                    file.write( "\n" + line)
+                if line.strip("\n") != word and line != "":
+                    file.write("\n" + line )
         file.close
         blacklist.remove(word)  
         await message.channel.send('Palabra descensurada correctamente :)')  
@@ -62,13 +61,13 @@ async def on_message(message):
 
 
 
-    if message.content.startswith('/censor'):        
+    if message.content.startswith('/censor') and len(message.content)>7:        
         if check_role(message.author,"Junta"): await ban_word(message)       
         else: await message.channel.send('Lo siento, no es nada personal, pero no tienes permiso para hacer eso :)')
         
 
 
-    if message.content.startswith('/uncensor'):                 
+    if message.content.startswith('/uncensor') and len(message.content)>9:                 
         if check_role(message.author,"Junta"): await unban_word(message)         
         else: await message.channel.send('Lo siento, no es nada personal, pero no tienes permiso para hacer eso :)')
 
