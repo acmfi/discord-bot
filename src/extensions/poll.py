@@ -14,7 +14,7 @@ class PollModel:
 
     def __str__(self):
         options_str = " ".join(['"{}"'.format(o) for o in self.options])
-        return '"{0}" {1}'.format(self.question, options_str)
+        return '/poll "{0}" {1}'.format(self.question, options_str)
 
     def __eq__(self, other):
         if isinstance(other, PollModel):

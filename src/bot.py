@@ -1,13 +1,6 @@
 import sys
 from discord.ext import commands
 
-# It would be nice to use argparse
-# https://docs.python.org/3/library/argparse.html
-if "--test" in sys.argv:
-    from src import test_parser
-    test_parser()
-    sys.exit(0)
-
 bot = commands.Bot(command_prefix='/')
 TOKEN = open('src/token.txt', 'r').read()
 
@@ -19,4 +12,4 @@ async def on_ready():
 
 
 bot.load_extension('extensions.poll')
-# bot.run(TOKEN)
+bot.run(TOKEN)
