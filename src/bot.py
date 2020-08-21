@@ -1,21 +1,16 @@
 import discord
-
-client = discord.Client()
-TOKEN = open('src/token.txt', 'r').read()
-
-
-@client.event
-async def on_ready():
-    print('We have logged in as {0.user}'.format(client))
+from discord.ext import commands
+import os
 
 
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
+bot = commands.Bot(command_prefix='¡')
 
-    if message.content.startswith('$hello'):
-        await message.channel.send('Hello!')
+TOKEN = open('token.txt', 'r').read()
 
 
-client.run(TOKEN)
+for file in os.listdir('./funcionalidades'):
+    if file.endswith('.py'):
+        bot.load_extension(f'funcionalidades.{file[:-3]}')
+
+
+bot.run(TOKEN)
