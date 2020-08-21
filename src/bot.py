@@ -12,5 +12,4 @@ for file in os.listdir('./funcionalidades'):
     if file.endswith('.py'):
         bot.load_extension(f'funcionalidades.{file[:-3]}')
 
-
 bot.run(TOKEN)
