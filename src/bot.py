@@ -2,7 +2,7 @@ import sys
 from discord.ext import commands
 
 bot = commands.Bot(command_prefix='/')
-TOKEN = open('src/token.txt', 'r').read()
+TOKEN = open('./token.txt', 'r').read()
 
 
 @bot.event
