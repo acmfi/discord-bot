@@ -1,6 +1,6 @@
 import pytest
 
-from src.extensions.poll import PollModel, Poll
+from src.extensions.poll import MultipleOptionPollModel, PollModel, Emoji, EMOJIS, PollOption, _poll_parser
 
 class SimulatedMessage:
     # We are using a Message model given by the Discord API. To simulate that
@@ -9,30 +9,19 @@ class SimulatedMessage:
         self.clean_content = msg
 
 def test_parser1():
-    # Structure that the function has to create
-    expected_poll = PollModel("This is a question", ["Option 1", "Option 2"])
-
-    # Convert the object to a string.
-    # It contains the following string: '/poll "This is a question" "Option 1" "Option 2"'
-    poll_str = str(expected_poll)
-
-    assert PollModel().from_message(SimulatedMessage(poll_str)) == expected_poll
+    poll_str = '/poll "This is a question" "Option 1" "Option 2"'
+    expected_poll = MultipleOptionPollModel(None, "This is a question", ["Option 1", "Option 2"])
+    assert _poll_parser(SimulatedMessage(poll_str)) == expected_poll
 
 def test_parser2():
-    # Structure that the function has to create
-    expected_poll = PollModel("This is a question", ["Option 1", "Option 2"])
-
     poll_str = '/poll Random text "This is a question" Random text "Option 1" Random text "Option 2"'
-
-    assert PollModel().from_message(SimulatedMessage(poll_str)) == expected_poll
+    expected_poll = MultipleOptionPollModel(None, "This is a question", ["Option 1", "Option 2"])
+    assert _poll_parser(SimulatedMessage(poll_str)) == expected_poll
 
 def test_parser3():
-    # Structure that the function has to create
-    expected_poll = PollModel("q", ["o1", "o2", "o3", "o4", "o5", "o6", "o7", "o8", "o9", "o10"])
-
     poll_str = '/poll "q" "o1" "o2" "o3" "o4" "o5" "o6" "o7" "o8" "o9" "o10"'
-
-    assert PollModel().from_message(SimulatedMessage(poll_str)) == expected_poll
+    expected_poll = MultipleOptionPollModel(None, "q", ["o1", "o2", "o3", "o4", "o5", "o6", "o7", "o8", "o9", "o10"])
+    assert _poll_parser(SimulatedMessage(poll_str)) == expected_poll
 
 def test_invalid_input1():
     invalid_command = '/poll "Here your question" "Here an option" "A bad option'
@@ -64,20 +53,51 @@ def test_invalid_input6():
     with pytest.raises(Exception):
         PollModel().from_message(SimulatedMessage(invalid_command))
 
-def test_create_poll_test1():
-    poll_model = PollModel("Here your question", ['Here an option', 'Maybe another option', 'and final option'])
-    expected = "**Here your question**\n\n" \
-               ":one:   Here an option\n" \
-               ":two:   Maybe another option\n" \
-               ":three:   and final option"
-    poll_str = str(poll_model)
-    poll_model_generated = PollModel().from_message(SimulatedMessage(poll_str))
-    assert poll_model_generated.poll_str == expected and \
-           poll_model_generated.reactions["short"] == [":one:", ":two:", ":three:"]
+def test_create_option1():
+    option_str = "This is an option"
+    option = PollOption(option_str)
+    expected = PollOption(option_str)
+    assert option == expected
 
-def test_create_poll_test2():
-    poll_model = PollModel("q", ["o1", "o2", "o3", "o4", "o5", "o6", "o7", "o8", "o9", "o10"])
-    expected = "**q**\n\n" \
+def test_create_option2():
+    option_str = "This is an option"
+    option = PollOption(option_str).set_keycap_emoji(3)
+    expected = PollOption(option_str)
+    expected.emoji = Emoji(EMOJIS["short"][2], EMOJIS["unicode"][2])
+    assert option == expected
+
+def test_create_option3():
+    option_str = "Invalid index for emoji"
+
+def test_create_option4():
+    option_str = "Invalid index for emoji"
+    with pytest.raises(Exception):
+        PollOption(option_str).set_keycap_emoji(0)
+    with pytest.raises(Exception):
+        PollOption(option_str).set_keycap_emoji(-5)
+
+def test_create_option5():
+    option_str = "Invalid index for emoji"
+    with pytest.raises(Exception):
+        PollOption(option_str).set_keycap_emoji(11)
+    with pytest.raises(Exception):
+        PollOption(option_str).set_keycap_emoji(18)
+
+def test_create_poll1():
+    options = ['Here an option', 'Maybe another option', 'and final option']
+    poll_model = MultipleOptionPollModel(None, "Here your question", options)
+    expected_str = "**Here your question**\n\n" \
+                   ":one:   Here an option\n" \
+                   ":two:   Maybe another option\n" \
+                   ":three:   and final option"
+    expected_poll = MultipleOptionPollModel(None, "Here your question", options)
+    expected_poll.poll_str = expected_str
+    assert expected_poll == poll_model
+
+def test_create_poll2():
+    options = ["o1", "o2", "o3", "o4", "o5", "o6", "o7", "o8", "o9", "o10"]
+    poll_model = MultipleOptionPollModel(None, "q", options)
+    expected_str = "**q**\n\n" \
                ":one:   o1\n" \
                ":two:   o2\n" \
                ":three:   o3\n" \
@@ -88,8 +108,6 @@ def test_create_poll_test2():
                ":eight:   o8\n" \
                ":nine:   o9\n" \
                ":keycap_ten:   o10"
-    poll_str = str(poll_model)
-    poll_model_generated = PollModel().from_message(SimulatedMessage(poll_str))
-    assert poll_model_generated.poll_str == expected and \
-           poll_model_generated.reactions["short"] == [":one:", ":two:", ":three:", ":four:", ":five:", ":six:",
-                                                       ":seven:", ":eight:", ":nine:", ":keycap_ten:"]
+    expected_poll = MultipleOptionPollModel(None, "q", options)
+    expected_poll.poll_str = expected_str
+    assert expected_poll == poll_model
