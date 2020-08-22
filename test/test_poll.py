@@ -68,15 +68,12 @@ def test_create_option2():
 
 def test_create_option3():
     option_str = "Invalid index for emoji"
-
-def test_create_option4():
-    option_str = "Invalid index for emoji"
     with pytest.raises(Exception):
         PollOption(option_str).set_keycap_emoji(0)
     with pytest.raises(Exception):
         PollOption(option_str).set_keycap_emoji(-5)
 
-def test_create_option5():
+def test_create_option4():
     option_str = "Invalid index for emoji"
     with pytest.raises(Exception):
         PollOption(option_str).set_keycap_emoji(11)
