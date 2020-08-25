@@ -23,45 +23,20 @@ class VoiceControl(commands.Cog):
 
     def __init__(self, bot_):
         self.bot = bot_
+        self.levantados_ = []
 
-    @commands.command(name='BajarMano', aliases=['bajarmano', 'Bajar', 'bajar'], brief='Baja la mano(silencia)',
-                      description='Permite sileciarte a ti mismo o si eres ' + str_permitted_roles_names() +
-                                  ' silenciar a quienes no lo son',
-                      usage='[@usuario/s|@everyone]')
-    async def bajar_mano(self, ctx):
-        # Los admin y ponente pueden silenciar a quien quieran o a todos (menos a otros ponentes/admins)
+    @commands.command(name='Levantados', aliases=['levantados'],
+                      brief='Muestra los usuarios que han levantado la mano',
+                      description='Muestra, en orden de llegada, los usuarios que han levantado la mano')
+    async def levantados(self, ctx):
         message = ctx.message
-        if len(message.mentions) > 0 or message.mention_everyone:
-            if not have_permitted_rol(message.author.roles):
-                await message.channel.send(
-                    'Solo puedes bajarte la mano a ti mismo si no eres ' + str_permitted_roles_names())
-                return
-            if message.mention_everyone:
-                for member in message.channel.members:
-                    if member.voice is not None and not have_permitted_rol(member.roles):
-                        await member.edit(mute=True)
-                await message.channel.send("```css\n[Silencio todo el mundo]```")
-            else:
-                for member in message.mentions:
-                    if have_permitted_rol(member.roles):
-                        await message.channel.send('No puedes bajar la mano a ' + member.mention + ' ya que es ' +
-                                                   str_permitted_roles_names())
-                    elif member.voice is None:
-                        await message.channel.send(
-                            'No puedes bajar la mano a ' + member.mention + ' si no está conectado a un canal de voz')
-                    else:
-                        await member.edit(mute=True)
-                        await message.channel.send('A ' + member.mention + ' le han bajado la mano un ' +
-                                                   str_permitted_roles_names())
-        else:  # No ha mencionado a nadie (autosilenciar)
-            if message.author.voice is None:  # Si no estas en ningun canal de voz, VoiceState es None
-                await message.channel.send('No puedes bajar la mano si no estas conectado a un canal de voz')
-            else:
-                try:
-                    await message.author.edit(mute=True)
-                    await message.channel.send(message.author.mention + ' ha bajado la Mano')
-                except discord.HTTPException:
-                    await message.channel.send('Un error ha ocurrido')
+        message_channel = message.channel
+        if len(self.levantados_) == 0:
+            await message_channel.send('Nadie ha levantado la mano')
+        else:
+            result = 'Los usuarios que han levantado la mano, en orden de llegada ' \
+                     'siendo el de mas a la izquierda el primero, son:\n' + ", ".join(self.levantados_)
+            await message_channel.send(result)
 
     @commands.command(name='LevantarMano', aliases=['levantarmano', 'Levantar', 'levantar'],
                       brief='Levanta la mano(solicita desilencio)',
@@ -69,33 +44,103 @@ class VoiceControl(commands.Cog):
                                   str_permitted_roles_names() + ' te de la palabra')
     async def levantar_mano(self, ctx):
         message = ctx.message
-        channel = message.channel  # Tiene sentido?
-        if message.author.voice is None:
-            await channel.send('No puedes levantar la mano si no estas conectado a un canal de voz')
-        else:
-            await channel.send(
-                "```fix\n" + message.author.display_name + " ha levantado la Mano```")
+        message_author = message.author
+        message_channel = message.channel
 
-    @commands.command(name='DarMano', aliases=['darmano', 'Dar', 'dar'],
-                      brief='Da la mano(desilencia)',
-                      description='Permite a un ' + str_permitted_roles_names() +
-                                  ' dar la mano o la palabra a uno o varios usuarios',
-                      usage='@usuario/s|@everyone')
-    async def dar_mano(self, ctx):
+        if message_author.voice is None:
+            await message_channel.send('No puedes levantar la mano si no estas conectado a un canal de voz')
+            return
+        if message_author.mention not in self.levantados_:
+            await message_channel.send("```fix\n" + message_author.display_name + " ha levantado la mano```")
+            self.levantados_.append(message_author.mention)
+
+    @commands.command(name='BajarMano', aliases=['bajarmano', 'Bajar', 'bajar'],
+                      brief='Baja la mano(dejas de pedir la palabra)',
+                      description='Permite dejar de solicitar hablar si has cambiado de opinion '
+                                  'o ya se te ha resuelto la duda')
+    async def bajar_mano(self, ctx):
         message = ctx.message
+        message_author = message.author
+        message_author_mention = message_author.mention
+        message_channel = message.channel
+
+        if message_author.voice is None:
+            await message_channel.send('No puedes bajar la mano si no estas conectado a un canal de voz')
+            return
+
+        if message_author_mention in self.levantados_:
+            await message_channel.send("```fix\n" + message_author.display_name + " ha bajado la mano```")
+            self.levantados_.remove(message_author_mention)
+        else:
+            await message_channel.send('No puedes bajarte la mano si no la has levantado previamente')
+
+    @commands.command(name='Silenciar', aliases=['silenciar'], brief='Silenciate a ti mismo o a los demás)',
+                      description='Permite sileciarte a ti mismo o si eres ' + str_permitted_roles_names() +
+                                  ' silenciar a quienes no lo son',
+                      usage='Opcional[@usuario/s|@everyone]')
+    async def silenciar(self, ctx):
+        message = ctx.message
+        message_author = message.author
+        message_channel = message.channel
+        mentions = message.mentions
+        mention_everyone = message.mention_everyone
+
+        if len(mentions) > 0 or mention_everyone:
+            if not have_permitted_rol(message_author.roles):
+                await message_channel.send(
+                    'Solo puedes silenciarte a ti mismo si no eres ' + str_permitted_roles_names())
+                return
+            if mention_everyone:
+                for member in message_channel.members:
+                    if member.voice is not None and not have_permitted_rol(member.roles):
+                        await member.edit(mute=True)
+                await message_channel.send("```css\n[Silencio todo el mundo]```")
+            else:
+                for member in mentions:
+                    if have_permitted_rol(member.roles):
+                        await message_channel.send('No puedes silenciar a ' + member.mention + ' ya que es ' +
+                                                   str_permitted_roles_names())
+                    elif member.voice is None:
+                        await message_channel.send(
+                            'No puedes silenciar a ' + member.mention + ' si no está conectado a un canal de voz')
+                    else:
+                        await member.edit(mute=True)
+                        await message_channel.send('A ' + member.mention + ' le ha silenciado un ' +
+                                                   str_permitted_roles_names())
+        else:  # No ha mencionado a nadie (autosilenciar)
+            if message_author.voice is None:  # Si no estas en ningun canal de voz, VoiceState es None
+                await message_channel.send('No puedes silenciarte si no estas conectado a un canal de voz')
+            else:
+                try:
+                    await message_author.edit(mute=True)
+                    await message_channel.send(message_author.mention + ' se ha silenciado')
+                except discord.HTTPException:
+                    await message_channel.send('Un error ha ocurrido')
+
+    @commands.command(name='Desilenciar', aliases=['desilenciar'],
+                      brief='Desilencia',
+                      description='Permite a un ' + str_permitted_roles_names() +
+                                  ' desilenciar a uno o varios usuarios',
+                      usage='@usuario/s|@everyone')
+    async def desilenciar(self, ctx):
+        message = ctx.message
+        message_channel = message.channel
+
         if not have_permitted_rol(message.author.roles):
-            await message.channel.send('No puedes dar la palabra si no eres ponente o admin')
-        elif message.mention_everyone:
-            for member in message.channel.members:
+            await message_channel.send('No puedes desilenciar si no eres ' + str_permitted_roles_names())
+            return
+
+        if message.mention_everyone:
+            for member in message_channel.members:
                 if member.voice is not None:
                     await member.edit(mute=False)
-            await message.channel.send("```css\n[A hablar todo el mundo]```")
+            await message_channel.send("```css\n[A hablar todo el mundo]```")
         else:
             for member in message.mentions:
                 if member.voice is None:
-                    await message.channel.send(
-                        'No puedes dar la palabra a' + member.mention + 'si no está conectado a un canal de voz')
+                    await message_channel.send(
+                        'No puedes desilenciar a' + member.mention + 'si no está conectado a un canal de voz')
                 else:
                     await member.edit(mute=False)
-                    await message.channel.send('A ' + member.mention + ' le han dado la palabra un ' +
+                    await message_channel.send('A ' + member.mention + ' le ha desilenciado un ' +
                                                str_permitted_roles_names() + ' :speaking_head:')
