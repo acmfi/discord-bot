@@ -1,12 +1,10 @@
-import discord
 from discord.ext import commands
 import os
 
+bot = commands.Bot(command_prefix='!')
 
-bot = commands.Bot(command_prefix='¡')
-
-TOKEN = open('token.txt', 'r').read()
-
+with open('token.txt', 'r') as token_file:
+    TOKEN = token_file.read()
 
 for file in os.listdir('./funcionalidades'):
     if file.endswith('.py'):
