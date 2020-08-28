@@ -37,6 +37,9 @@ class BanHammer(commands.Cog):
             i for i in self.blacklist if message_content.casefold().count(i) > 0]
 
         if len(forbidden_words_used) > 0:
+            # Solo hace falta corregirlo para que no te censure a ti mismo al usar el comando censor,
+            # ya que primeron censura y luego lee el mensaje con la nueva palabra prohibida.
+            # Uncensor, descensura y luego lee la palabra que se acaba de permitir usar
             censor_command = self.bot.get_command('censor')
             censor_command_names = censor_command.aliases
             censor_command_names.append(censor_command.name)
@@ -82,5 +85,5 @@ class BanHammer(commands.Cog):
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
-        if isinstance(error, commands.errors.CheckFailure):
+        if isinstance(error, commands.errors.MissingRole):
             await ctx.send('Lo siento, no es nada personal, pero no tienes permiso para hacer eso :)')
