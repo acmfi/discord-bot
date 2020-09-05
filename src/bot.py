@@ -1,17 +1,20 @@
 from discord.ext import commands
 
-bot = commands.Bot(command_prefix='!')
-with open('token.txt', 'r') as token_file:
-    TOKEN = token_file.read()
 
+class Bot:
 
-@bot.event
-async def on_ready():
-    print('Logged in as')
-    print(bot.user.name)
-    print(bot.user.id)
-    print('------')
+    def __init__(self):
+        self.bot = commands.Bot(command_prefix='!')
+        with open('token.txt', 'r') as token_file:
+            self.TOKEN = token_file.read()
 
+    @self.bot.event
+    async def on_ready(self):
+        print('Logged in as')
+        print(self.bot.user.name)
+        print(self.bot.user.id)
+        print('------')
 
-bot.load_extension('Extensions.voice_control')
-bot.run(TOKEN)
+    def run(self):
+        self.bot.load_extension('Extensions.voice_control')
+        self.bot.run(self.TOKEN)
