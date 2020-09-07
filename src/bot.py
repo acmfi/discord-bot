@@ -8,7 +8,6 @@ class Bot:
         with open('token.txt', 'r') as token_file:
             self.TOKEN = token_file.read()
 
-    @self.bot.event
     async def on_ready(self):
         print('Logged in as')
         print(self.bot.user.name)
@@ -16,5 +15,11 @@ class Bot:
         print('------')
 
     def run(self):
+        self.bot.add_listener(self.on_ready)
         self.bot.load_extension('Extensions.voice_control')
         self.bot.run(self.TOKEN)
+
+
+# Hay que crear un archivo script
+bot = Bot()
+bot.run()
