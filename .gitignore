@@ -8,3 +8,5 @@ src/token.txt
 *pyc
 venv
 .cache
+htmlcov
+.coverage

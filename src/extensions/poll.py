@@ -126,7 +126,7 @@ class MultipleOptionPollModel(PollModel):
 
     def __eq__(self, other):
         if isinstance(other, MultipleOptionPollModel):
-            return self.question == other.question and self.flags == other.flags \
+            return self.question == other.question and self.flags == other.flags and self.poll_str == other.poll_str \
                    and False not in [o1 == o2 for (o1, o2) in zip(self.options, other.options)]
 
 
@@ -196,6 +196,7 @@ def seconds2str(seconds):
         else:
             return f"{n_minutes}m"
     return f"{seconds}s"
+
 
 def parse_flag_value(argument, value_input):
     if argument == "time":
@@ -304,34 +305,31 @@ class PollCommand:
         return usage + flags + help_str
 
     def parser(self, input_args, ctx):
+        if len(input_args) == 1 and input_args[0] == "/poll":
+            raise InvalidInputException()
+
         try:
             flags_input, args = getopt.getopt(input_args, "",
                                               ["help"] + [f + "=" if self._FLAGS[f]["needs_value"] else f
                                                           for f in self._FLAGS])
         except getopt.GetoptError:
             raise InvalidFlagException()
-        if "--help" in [f[0] for f in flags_input]:
-            raise InvalidInputException()
 
-        #possible_flags = list(self._FLAGS.keys())
+        flags_name = [f[0] for f in flags_input]
+        if "--help" in flags_name:
+            raise InvalidInputException()
+        if "--time" in flags_name and "--no-time" in flags_name:
+            raise InvalidFlagException("Cannot use --time and --no-time at the same time")
+
         flags = []
 
         # Flags given by the user
         for (k, v) in flags_input:
-         #   possible_flags.remove(k[2:])
             f = self._FLAGS[k[2:]]
+            flags_name.append(k[2:])
             flags.append(FlagsPollCommand(f["needs_value"], k[2:], f["description"], f["examples"], v,
                                           f["default_value"] if "default_value" in f else None))
-        # Manually put the flags as an object if the user didn't specify them with default values
-        '''
-
-        for k in possible_flags:
-            f = self._FLAGS[k]
-            flags.append(FlagsPollCommand(f["needs_value"], k, f["description"], f["examples"], None,
-                                          f["default_value"] if "default_value" in f else None))
-        '''
-
-        if len(args) in [0, 2]:
+        if len(args) in [0, 2] or len(args[1:]) > 10:
             raise InvalidInputException()
         if len(args) == 1:
             return YesOrNoPollModel(ctx.message, args[0], flags)
