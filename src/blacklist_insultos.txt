@@ -2,7 +2,6 @@ abadol
 abejarruca
 abejarruco
 aberracion
-aberración
 aberrante
 ablanda brevas
 abollao
@@ -10,10 +9,10 @@ aborto
 abrazafarolas
 abrillantaglandes
 abulto
-adán
+adan
 afilasables
 aguafiestas
-alacrán
+alacran
 alcachofo
 alcornoke
 alcornoque
@@ -38,7 +37,7 @@ anormal
 antancanciao
 apollardao
 apollardar
-aragán
+aragan
 arracacho
 arrastramantas
 arrastrazapatillas
@@ -86,7 +85,7 @@ bobo
 bobolaverga
 bobomierda
 boborremoto
-bocabuzón
+bocabuzon
 bocachancla
 bocachocho
 bocafiemo
@@ -108,7 +107,6 @@ brètol
 bufavidres
 bujarra
 bujarron
-bujarrón
 bulebule
 burreras
 burro de set soles
@@ -127,11 +125,9 @@ cabezalpaca
 cabezantorcha
 cabezarrucho
 cabezon
-cabezón
 cabron
 cabrona
 cabronazo
-cabrón
 cacho mierda
 cachomierda
 cade de fava
@@ -142,7 +138,6 @@ cagadubtes
 cagaestacas
 cagalindes
 cagamandurries
-cagamandúrries
 caganio
 cagapoc
 cagaportales
@@ -150,7 +145,7 @@ cagarro
 cagarruta
 cagarrutas
 caguiñas
-caharrán
+caharran
 calamidad
 calenturas
 calvo
@@ -182,7 +177,7 @@ cara de cona
 carabassa
 caracabello
 caracandao
-caracartón
+caracarton
 carachancla
 caracoño
 caracul
@@ -238,7 +233,7 @@ chavea
 cheo de moscas
 chichon
 chimpa
-chimpajosé
+chimpajose
 chimpamonas
 chimpin
 chingada
@@ -251,8 +246,8 @@ chupamela
 chupamingas
 chupasangre
 chupatintas
-chupóptero
-chusmón
+chupoptero
+chusmon
 cierrabares
 ciervo
 cimborrio
@@ -308,11 +303,9 @@ empana
 empanao
 empujamierda
 en garrovillas
-enderezaplátanos
+enderezaplatanos
 energumena
 energumeno
-energúmena
-energúmeno
 engaña baldosas
 engendro
 enjuto
@@ -335,8 +328,6 @@ estripa gasones
 estupida
 estupido
 estòtil
-estúpida
-estúpido
 eunuco
 exelol
 facha
@@ -346,7 +337,7 @@ faino ti lanjran
 falfañote
 fanegas
 fanequero
-fanicerós
+faniceros
 fantoche
 farfoya
 fariseo
@@ -367,8 +358,8 @@ figamustia
 fill de monja
 fitigote
 follacabras
+follacaros
 follagatos
-follácaros
 forrotimple
 fune
 funesto
@@ -376,11 +367,10 @@ futrul
 gabacho
 gallimarsot
 galocho
-gamarús
-ganapán
+gamarus
+ganapan
 gandul
 gandula
-gandúl
 gansa
 ganso
 garibolo
@@ -389,7 +379,6 @@ garroso
 garrulo
 gaznapiro
 gañan
-gañán
 gili
 gilicoño
 gilipichi
@@ -399,14 +388,14 @@ gilipollas
 gilipuerta
 golismero
 gonorrea
-gordinflón
+gordinflon
 gordo
 gorrino
 gra de pus
 granuja
 grosera
 grosero
-guarnío
+guarnio
 guarral
 guarrilla
 gumias
@@ -426,11 +415,9 @@ hilh de gaudumela
 horripilante
 huelebragas
 huevon
-huevón
 idiota
 ignorante
 imbecil
-imbécil
 impertinente
 inculto
 inelegante
@@ -439,13 +426,12 @@ innortao
 inoperante
 insulso
 inutil
-inútil
 jartible
 jodido
 julai
 lacazan
 ladilla
-lagumán
+laguman
 lamecharcos
 lamecirios
 lameculos
@@ -454,7 +440,6 @@ lameplatos
 lamerajas
 lameñordos
 langran
-langrán
 lapa
 lareta
 larry
@@ -479,7 +464,7 @@ maganto
 mahara
 mahareta
 majadero
-majarón
+majaron
 mal pelat
 malafoya
 malandra
@@ -501,15 +486,13 @@ mameluco
 mamon
 mamona
 mamporrero
-mamón
 mangarranas
 mangurrian
-mangurrián
-manos gachas
 manos de arbol
+manos gachas
 mantecas
 margarito
-maricón
+maricon
 marimacho
 mascachapas
 mascaxapas
@@ -528,9 +511,9 @@ me cago en tus muertos
 meapilas
 media mierda
 meketrefe
-melindrós
+melindros
+melon
 melona
-melón
 mema
 membrillo
 memo
@@ -541,7 +524,7 @@ merda
 merda d'oca
 merda seca
 merdaseca
-merdellón
+merdellon
 merluzo
 meuca
 microbi
@@ -580,17 +563,16 @@ niñato
 notas
 nugallan
 oligofrenico
-oligofrénico
 ollosdeboto
 osobuco
 otaco
 otako
 otaku
 otakus
-pachón
+pachon
 pagafantas
 paiaso
-pailán
+pailan
 pajera
 pajero
 palotrasto
@@ -601,6 +583,7 @@ pambisito
 pamplinas
 paneco
 panfigol
+panfilo
 panojas
 panoli
 panto
@@ -612,8 +595,8 @@ papahostias
 papamoscas
 papanatas
 papirote
+papon
 paposo
-papón
 paquete
 pardal
 pardilla
@@ -626,8 +609,6 @@ pasiego
 pasmarote
 paspan
 paspon
-paspán
-paspón
 passarell
 pastanaga
 patacrocker
@@ -636,9 +617,6 @@ patan
 patasdealambre
 patetica
 patetico
-patán
-patética
-patético
 pavisosa
 pavisoso
 pavitonto
@@ -678,11 +656,11 @@ petimetre
 picapleitos
 pichabrava
 pichacorta
-pichónaco
+pichonaco
 piltrafas
 piltrafillas
+pimpin
 pimpoyo
-pimpín
 pinchacolillas
 pinche
 pinfloid
@@ -706,6 +684,7 @@ plumifero
 poc suc
 pocasluces
 pocasolta
+pofaro
 pollaboba
 pollopera
 pomot
@@ -715,17 +694,14 @@ prea
 pregonao
 pringazorras
 prosma
-psifílico
+psifilico
 pudrecolchones
 pusilanime
-pusilánime
 puta
-putapénico
+putapenico
 putos
 putot
-pánfilo
 pòtol
-pófaro
 rabo
 rata
 remenacacas
@@ -739,7 +715,7 @@ robaperas
 rucio
 ruda
 rudo
-rufían
+rufian
 ruina
 sabandija
 saborio
@@ -753,7 +729,6 @@ sangre sucia
 sanguijuela
 santurron
 santurrona
-santurrón
 sarnoso
 seboso
 sietemesino
@@ -772,7 +747,7 @@ subnorpollas
 sunormal
 tacaño
 tap de suro
-tapón de balsa
+tapon de balsa
 tarado
 tarambana
 tarantantan
@@ -781,6 +756,7 @@ tarugo
 tarumba
 tastaolletes
 te huele la espalda a baron dandi
+tio plom
 tita freda
 titafluixa
 titafreda
@@ -826,7 +802,6 @@ tros de puta
 tros de quòniam
 tuercebotas
 turco
-tío plom
 tòtil
 vandalo
 vendehumos
@@ -835,7 +810,6 @@ vidroid
 vigardo
 votante del pp
 vuelcalitros
-vándalo
 xafandino
 xafarder
 xafaxarcos
@@ -848,7 +822,7 @@ yaro
 yiyon
 zaborrero
 zafio
-zalapastrán
+zalapastran
 zamacuco
 zamarraco
 zamarro
@@ -856,8 +830,8 @@ zambergo
 zampabollos
 zanahorio
 zangano
+zangüangano
 zangüango
-zangüángano
 zarandajo
 zarrapastrosa
 zarrapastroso
@@ -874,4 +848,3 @@ zumbao
 zurcemierdas
 zurmaco
 zurremierdas
-zángano
