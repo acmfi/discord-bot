@@ -1,1 +1,11 @@
 src/token.txt
+pytest_cache/
+vs/
+vscode/
+src/__pycache__/
+src/funcionalidades/__pycache__
+test/__pycache__/
+*.pyc_
+.vscode/
+.vs/
+.idea/

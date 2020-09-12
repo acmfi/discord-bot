@@ -1,5 +1,6 @@
 from discord.ext import commands
 from difflib import SequenceMatcher
+from discord import user
 
 PERMITTED_ROLES_NAMES = ('Junta', 'Admin')
 
@@ -98,6 +99,9 @@ class BanHammerView(commands.Cog):
     async def on_message(self, message):
         if message.author == self.bot.user:
             return None
+            
+        if(type(message.author) is user.User):#Está interactuando con el bot, no en el canal general  
+            return None
 
         forbidden_words_used = BanHammer().get_forbidden_words(message=message, commands_name=BanHammerCommand().get_command_n_aliases())        
         if forbidden_words_used:
@@ -105,10 +109,9 @@ class BanHammerView(commands.Cog):
             await message.delete() 
             # Send an alert through the channel
             await message.channel.send(message.author.mention + ", debes cuidar tu vocabulario, jovencito")            
-            # Send a private message to the user
-            await message.author.send("El mensaje \n" + str(f'```diff\n-"{message.content}"```') +
-                                          "no se ajusta a las normas, en los próximos mensajes no uses: " +
-                                          str(forbidden_words_used).strip('[]') + "ni parecidos.")
+            # Send a private message to the user        
+            await message.author.send("El mensaje {} no se ajusta a las normas, intenta no usar {} ni parecidos"
+            .format(str(f'```diff\n- "{message.content}"```'),str(forbidden_words_used).strip('[]')))
 
 
     @commands.command(name='uncensor')
@@ -121,3 +124,6 @@ class BanHammerView(commands.Cog):
     async def on_command_error(self, ctx, error):
         if isinstance(error, commands.errors.MissingRole):
             await ctx.send('Lo siento, no es nada personal, pero no tienes permiso para hacer eso :)')
+
+
+    
