@@ -92,6 +92,8 @@ class PollModel:
 
         self.created_at = time.time()
 
+        self.is_active = False
+
         time_flag = list(filter(lambda flag: flag.argument == "time", self.flags))
         if len(time_flag) == 0:
             no_time_flag = list(filter(lambda flag: flag.argument == "no-time", self.flags))
@@ -214,13 +216,14 @@ def parse_flag_value(argument, value_input):
         elif time_type == "d":
             return int(amount) * 60 * 60 * 24
 
+
 class PollHandler:
     def __init__(self, poll: PollModel):
         self.poll = poll
 
         self.ob = rx.interval(REFRESH_RATE)
         self.sub = self.ob.pipe(
-            op.take_until_with_time(self.duration)  # Seconds that the poll will last
+            op.take_until_with_time(self.poll.duration)  # Seconds that the poll will last
         )
 
         # Use for avoid waiting to edit message
@@ -242,6 +245,7 @@ class PollHandler:
         )
 
     def __on_next(self, i):
+        self.poll.is_active = True
         seconds_left = int(self.poll.created_at + self.poll.duration - time.time())
         seconds_left = 5 * round(seconds_left / 5)  # Round seconds to 0 or 5
         poll_str = f"{str(self.poll)}\n\n{CLOCKS_EMOJI[i % 12]}  La votación cierra en {seconds2str(seconds_left)}"
@@ -251,6 +255,7 @@ class PollHandler:
         pass
 
     def __on_completed(self):
+        self.poll.is_active = False
         poll_str = f"{str(self.poll)}\n\n:male_dancer::dancer:  La votación ha terminado  :male_dancer::dancer:"
         self.__edit_msg(poll_str)
 
@@ -268,6 +273,17 @@ class PollManager:
         await poll_handler.send_poll_n_react(ctx)
         await poll_handler.subscribe()
         self.current_polls.append(poll_handler)
+
+    def reaction_should_be_removed(self, reaction):
+        poll_handler = list(filter(lambda p: p.poll.bot_message is not None and
+                                             p.poll.bot_message.id == reaction.message.id and
+                                             p.poll.is_active,
+                              self.current_polls))
+        if len(poll_handler) == 0:
+            return False
+        poll_handler = poll_handler[0]
+        return reaction.emoji not in poll_handler.poll.get_reaction_emojis()
+
 
 
 class PollCommand:
@@ -317,7 +333,7 @@ class PollCommand:
 
         flags_name = [f[0] for f in flags_input]
         if "--help" in flags_name:
-            raise InvalidInputException()
+            return None, True
         if "--time" in flags_name and "--no-time" in flags_name:
             raise InvalidFlagException("Cannot use --time and --no-time at the same time")
 
@@ -331,10 +347,11 @@ class PollCommand:
                                           f["default_value"] if "default_value" in f else None))
         if len(args) in [0, 2] or len(args[1:]) > 10:
             raise InvalidInputException()
+            raise InvalidInputException()
         if len(args) == 1:
-            return YesOrNoPollModel(ctx.message, args[0], flags)
+            return YesOrNoPollModel(ctx.message, args[0], flags), None
         else:
-            return MultipleOptionPollModel(ctx.message, args[0], args[1:], flags)
+            return MultipleOptionPollModel(ctx.message, args[0], args[1:], flags), None
 
 
 class Poll(commands.Cog):
@@ -345,20 +362,35 @@ class Poll(commands.Cog):
     @commands.command(name='poll', aliases=['encuesta'], brief='Creates a new poll',
                       description=PollCommand().get_description(), usage=PollCommand().get_usage())
     async def create_poll(self, ctx, *args):
+        async def send_msg(msg, log):
+            await ctx.message.channel.send(msg)
+            print(log)
+
         try:
-            poll = PollCommand().parser(args, ctx)
+            poll, is_help = PollCommand().parser(args, ctx)
+            if is_help:
+                await send_msg(f"```{PollCommand().get_usage()}```", f"Log: Help requested {ctx.message.clean_content}")
+                return
             print(poll.get_log())
         except InvalidInputException as e:
-            await ctx.message.channel.send(f"```{PollCommand().get_usage()}```")
-            print(f"Log: Invalid input or help requested {ctx.message.clean_content} || {e}")
+            await send_msg(f"```{PollCommand().get_usage()}```",
+                           f"Log: Invalid input {ctx.message.clean_content} || {e}")
             return
         except InvalidFlagException as e:
-            await ctx.message.channel.send(f"```{PollCommand().get_usage()}```")
-            print(f"Log: Invalid flag in {ctx.message.clean_content} || {e}")
+            await send_msg(f"```{PollCommand().get_usage()}```",
+                           f"Log: Invalid flag {ctx.message.clean_content} || {e}")
             return
         except Exception as e:
-            await ctx.message.channel.send(f"```{PollCommand().get_usage()}```")
-            print(f"Log: Invalid input or help requested {ctx.message.clean_content} || {e}")
+            await send_msg(f"```{PollCommand().get_usage()}```",
+                           f"Log: Invalid input {ctx.message.clean_content} || {e}")
             return
 
         await self.poll_manager.add(ctx, poll)
+
+    @commands.Cog.listener()
+    async def on_reaction_add(self, reaction, user):
+        if self.bot.user == user:
+            return
+        should_be_removed = self.poll_manager.reaction_should_be_removed(reaction)
+        if should_be_removed:
+            await reaction.remove(user)

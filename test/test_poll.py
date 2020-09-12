@@ -23,6 +23,8 @@ def get_discord_format_args(question, options, flags):
 
 def get_expected_poll(question, options, flags):
     if len(options) == 0:
+        if question == "":
+            return None
         return YesOrNoPollModel(None, question, flags)
     else:
         return MultipleOptionPollModel(None, question, options, flags)
@@ -42,6 +44,7 @@ def get_variables(question, options, given_flags=[], need_expected_poll=True):
         return discord_format_args, ctx, expected_poll
     else:
         return discord_format_args, ctx
+
 
 def test_parser1():
     discord_format_args, ctx, expected_poll = get_variables("This is a question", ["Option 1", "Option 2"])
@@ -90,6 +93,7 @@ def test_parser8():
     discord_format_args, ctx, expected_poll = get_variables("This is a question", ["o1", "o2"], [("no-time", "")])
     assert PollCommand().parser(discord_format_args, ctx) == expected_poll
 
+
 def test_parser9():
     discord_format_args, ctx, expected_poll = get_variables("This is a question", [], [("time", "5m")])
     assert PollCommand().parser(discord_format_args, ctx) == expected_poll
@@ -98,6 +102,12 @@ def test_parser9():
 def test_parser10():
     discord_format_args, ctx, expected_poll = get_variables("This is a question", [], [("no-time", "")])
     assert PollCommand().parser(discord_format_args, ctx) == expected_poll
+
+
+def test_help():
+    discord_format_args, ctx = get_variables("", [], [("help", "")], False)
+    _, is_help = PollCommand().parser(discord_format_args, ctx)
+    assert is_help
 
 
 def test_flags1():
@@ -115,6 +125,10 @@ def test_flags3():
 def test_flags4():
     assert parse_flag_value("time", "1d") == 1 * 24 * 60 * 60
 
+
+def test_flags4():
+    with pytest.raises(InvalidFlagException ):
+        parse_flag_value("time", "8ns")
 
 def test_invalid_input1():
     discord_format_args, ctx = get_variables("This is a question", ["Only one option"], [], False)
@@ -141,6 +155,16 @@ def test_invalid_input4():
                                                             [("time", "5m"), ("no-time", "")])
     with pytest.raises(InvalidFlagException):
         PollCommand().parser(discord_format_args, ctx)
+
+
+def test_invalid_flag1():
+    with pytest.raises(InvalidFlagException):
+        FlagsPollCommand(True, "", "", [], None, None)
+
+
+def test_invalid_flag2():
+    flag = FlagsPollCommand(True, "", "", [], None, "default_value")
+    assert flag.value_input == "default_value"
 
 
 def test_create_option1():
