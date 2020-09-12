@@ -46,12 +46,17 @@ Crear y modificar el fichero src/bot_conf.json con la siguiente forma, consulte 
 {
     "token": "token del bot de discord",
     "channels_id": [
-        "id_1" // escriba por aquí todo los id de los canales donde desea recibir avisos mandados por los canales de telegram
+        "Primer ID (id de los canales que desean recibir avisos enviados por el canal de telegram)",
+        "Segundo ID"
     ],
-    "api_users": [ // array de todo los usuarios que puedan usar el API
+    "api_users": [
         {
-            "user": "tu userio",
-            "password": "tu contraseña"
+            "user": "nombre de usuario 1 (array de todo los usuarios que puedan usar el API)",
+            "password": "contraseña"
+        },
+        {
+            "user": "nombre de usuario 2",
+            "password": "contraseña 2"
         }
     ]
 }
