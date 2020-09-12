@@ -3,14 +3,15 @@ from multiprocessing import Queue
 import json
 
 
-def run(post_queue: Queue):
+def run(post_queue):
     """API server process started by discord bot on the main file
 
     Args:
-        post_queue (Queue): queue of the posts, resoure used for the model consumer/producer
+        post_queue (Queue): queue of the posts, resoure shared with the main bot
 
     """
-    USERS = (json.load(open('src/bot_conf.json', 'r')))["api_users"]
+    with open('src/bot_conf.json', 'r') as conf_file:
+        USERS = = (json.load(conf_file))["api_users"]
 
     api = Flask(__name__)
 
@@ -28,7 +29,6 @@ def run(post_queue: Queue):
     @api.route('/sendChannelPost', methods=['POST'])
     def send_channel_post():
         """put the post (json format) on the post_queue
-
         """
         post = request.json
         if not verify_user(post["user"]):
