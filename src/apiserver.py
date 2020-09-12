@@ -11,7 +11,7 @@ def run(post_queue):
 
     """
     with open('src/bot_conf.json', 'r') as conf_file:
-        USERS = = (json.load(conf_file))["api_users"]
+        USERS = (json.load(conf_file))["api_users"]
 
     api = Flask(__name__)
 
