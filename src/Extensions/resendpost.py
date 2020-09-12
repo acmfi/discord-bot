@@ -27,9 +27,8 @@ class ResendPost(commands.Cog):
             if post['photo']:
                 image_str = str(post['photo']).encode('ascii')
                 image_byte = base64.b64decode(image_str)
-                image = open('anuncio.png', 'wb+')
-                image.write(image_byte)
-                image.close()
+                with open('anuncio.png', 'wb+') as image:  
+                    image.write(image_byte)
 
             for channel in self.aviso_channels:
                 await channel.send(content=(post['caption'] if image else post['text']), file=(discord.File('anuncio.png') if image else None))
