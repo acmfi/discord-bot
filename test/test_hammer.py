@@ -1,5 +1,5 @@
 import pytest
-from src.funcionalidades.ban_hammer import BanHammer
+from src.funcionalidades.ban_hammer import BanHammer, have_permitted_rol
 
 
 class SimulatedMessage():
@@ -31,7 +31,7 @@ Hammer = BanHammer()
 
 
 def test_insult():    
-    assert len(Hammer.get_forbidden_words(SimulatedMessage("Eres muy tonto", "Santi", "Normal_User"), commands_name="")) == 1 
+    assert len(Hammer.get_forbidden_words(SimulatedMessage("Eres un cansaliebres", "Santi", "Normal_User"), commands_name="")) == 1 
 
 
 def test_no_insult():
@@ -58,3 +58,10 @@ def test_remove_existing_word():
 
 def test_remove_nonexisting_word():  
     assert Hammer.uncensor_word(SimulatedMessage("!censor PalabraABanearTest2", "Santi", "Junta")) == "La palabra no está baneada, por lo que no se ha removido"
+
+
+def test_correct_role():  
+    assert have_permitted_rol(SimulatedAuthor("User", "Junta").roles)
+
+def test_not_correct_role():  
+    assert not have_permitted_rol(SimulatedAuthor("User", "Noob").roles)
