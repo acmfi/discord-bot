@@ -4,7 +4,8 @@ import apiserver
 import json
 
 bot = commands.Bot(command_prefix='!')
-bot.CONF = json.load(open('src/bot_conf.json', 'r'))
+with open('src/bot_conf.json', 'r') as conf_file:
+    bot.CONF = json.load(conf_file) 
 
 
 @bot.event
