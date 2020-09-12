@@ -1,4 +1,3 @@
 src/token.txt
 src/channels_id.txt
-src/telegram_conf.json
-.gitignore
+src/bot_conf.json

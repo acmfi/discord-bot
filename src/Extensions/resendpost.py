@@ -19,6 +19,8 @@ class ResendPost(commands.Cog):
 
     @tasks.loop(seconds=5.0)
     async def resend_post(self):
+        """check for post in the queue each 5 seconds
+        """
         if not self.post_queue.empty():
             post = self.post_queue.get()
             image = None
@@ -34,6 +36,8 @@ class ResendPost(commands.Cog):
 
     @resend_post.before_loop
     async def before_resend_post(self):
+        """initialize a list of channels
+        """
         await self.bot.wait_until_ready()
-        self.aviso_channels = [self.bot.get_channel(int(channel_id.rstrip(
-            '\n'))) for channel_id in open('src/channels_id.txt').readlines()]
+        self.aviso_channels = [self.bot.get_channel(
+            int(channel_id)) for channel_id in self.bot.CONF["channels_id"]]

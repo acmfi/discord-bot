@@ -1,10 +1,10 @@
 from discord.ext import commands
 from multiprocessing import Process, Queue
 import apiserver
-import signal
+import json
 
 bot = commands.Bot(command_prefix='!')
-TOKEN = open('src/token.txt', 'r').read()
+bot.CONF = json.load(open('src/bot_conf.json', 'r'))
 
 
 @bot.event
@@ -19,4 +19,4 @@ bot.post_queue = Queue()
 apiserver = Process(target=apiserver.run, args=(bot.post_queue,))
 apiserver.start()
 bot.load_extension('Extensions.resendpost')
-bot.run(TOKEN)
+bot.run(bot.CONF["token"])

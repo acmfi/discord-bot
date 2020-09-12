@@ -13,6 +13,7 @@ Este bot esta desarrollado con la intención de automatizar y facilitar la gesti
 [@jonsalchichonnn](https://github.com/jonsalchichonnn)
 [@xiaopeng-ye](https://github.com/xiaopeng-ye)
 [@JustAntoRS](https://github.com/JustAntoRS)
+[@juan-vmarin](https://github.com/juan-vmarin)
 
 ## Como colaborar
 (Debes ser miembro del equipo discord-bot en la org acmfi)
@@ -38,6 +39,23 @@ pipenv install
 pipenv run python3 src/bot.py
 ```
 
+## Configuración del bot
+Crear y modificar el fichero src/bot_conf.json con la siguiente forma, consulte la siguiente [página](https://support.discord.com/hc/es/articles/206346498--D%C3%B3nde-puedo-encontrar-mi-ID-de-usuario-servidor-mensaje-) para encontrar el ID de tu canal.
+
+```json
+{
+    "token": "token del bot de discord",
+    "channels_id": [
+        "id_1" // escriba por aquí todo los id de los canales donde desea recibir avisos mandados por los canales de telegram
+    ],
+    "api_users": [ // array de todo los usuarios que puedan usar el API
+        {
+            "user": "tu userio",
+            "password": "tu contraseña"
+        }
+    ]
+}
+```
 
 
 

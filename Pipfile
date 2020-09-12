@@ -10,7 +10,6 @@ autopep8 = "*"
 discord = "*"
 pytest = "*"
 flask = "*"
-pytelegrambotapi = "*"
 requests = "*"
 
 [requires]
