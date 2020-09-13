@@ -19,5 +19,5 @@ async def on_ready():
 bot.post_queue = Queue()
 apiserver = ApiServer(bot.post_queue)
 apiserver.start()
-bot.load_extension('Extensions.resendpost')
+bot.load_extension('extensions.resendpost')
 bot.run(bot.CONF["token"])
