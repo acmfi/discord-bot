@@ -1,4 +1,7 @@
 src/token.txt
+src/channels_id.txt
+src/bot_conf.json
+src/token.txt
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

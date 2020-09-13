@@ -1,21 +1,23 @@
-import discord
+from discord.ext import commands
+from multiprocessing import Process, Queue
+from apiserver import ApiServer
+import json
 
-client = discord.Client()
-TOKEN = open('src/token.txt', 'r').read()
+bot = commands.Bot(command_prefix='!')
+with open('src/bot_conf.json', 'r') as conf_file:
+    bot.CONF = json.load(conf_file)
 
 
-@client.event
+@bot.event
 async def on_ready():
-    print('We have logged in as {0.user}'.format(client))
+    print('------------------')
+    print('Logged in as')
+    print(bot.user.name)
+    print(bot.user.id)
+    print('------------------')
 
-
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
-
-    if message.content.startswith('$hello'):
-        await message.channel.send('Hello!')
-
-
-client.run(TOKEN)
+bot.post_queue = Queue()
+apiserver = ApiServer(bot.post_queue)
+apiserver.start()
+bot.load_extension('Extensions.resendpost')
+bot.run(bot.CONF["token"])

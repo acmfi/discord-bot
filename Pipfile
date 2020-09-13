@@ -1,3 +1,21 @@
+<<<<<<< HEAD
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+autopep8 = "*"
+
+[packages]
+discord = "*"
+pytest = "*"
+flask = "*"
+requests = "*"
+
+[requires]
+python_version = "3.8"
+=======
 [[source]]
 name = "pypi"
 url = "https://pypi.org/simple"
@@ -11,3 +29,4 @@ pytest = "*"
 
 [requires]
 python_version = "3.8"
+>>>>>>> master
