@@ -50,11 +50,11 @@ Crear y modificar el fichero src/bot_conf.json con la siguiente forma, consulte 
     ],
     "api_users": [
         {
-            "user": "nombre de usuario 1 (array de todo los usuarios que puedan usar el API)",
+            "username": "nombre de usuario 1 (array de todo los usuarios que puedan usar el API)",
             "password": "contraseña"
         },
         {
-            "user": "nombre de usuario 2",
+            "username": "nombre de usuario 2",
             "password": "contraseña 2"
         }
     ]
