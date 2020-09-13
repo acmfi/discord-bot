@@ -218,8 +218,11 @@ def parse_flag_value(argument, value_input):
 
 
 class PollHandler:
-    def __init__(self, poll: PollModel):
+    def __init__(self, ctx, poll: PollModel):
         self.poll = poll
+
+        if self.poll.duration == -1:
+            return
 
         self.ob = rx.interval(REFRESH_RATE)
         self.sub = self.ob.pipe(
@@ -230,6 +233,8 @@ class PollHandler:
         # https://stackoverflow.com/questions/53722398/how-to-send-a-message-with-discord-py-from-outside-the-event-loop-i-e-from-pyt
         self._loop = asyncio.get_event_loop()
 
+        self.subscribe()
+
     async def send_poll_n_react(self, ctx):
         # Send the poll
         self.poll.bot_message = await ctx.message.channel.send(str(self.poll))
@@ -237,7 +242,7 @@ class PollHandler:
         # React to the message with the different emojis associated to the options
         [await self.poll.bot_message.add_reaction(emoji) for emoji in self.poll.get_reaction_emojis()]
 
-    async def subscribe(self):
+    def subscribe(self):
         self.sub.subscribe(
             on_next=self.__on_next,
             on_error=lambda e: self.__on_error(e),
@@ -269,21 +274,20 @@ class PollManager:
         self.current_polls = []
 
     async def add(self, ctx, poll):
-        poll_handler = PollHandler(poll)
-        await poll_handler.send_poll_n_react(ctx)
-        await poll_handler.subscribe()
+        poll_handler = PollHandler(ctx, poll)
         self.current_polls.append(poll_handler)
+        await poll_handler.send_poll_n_react(ctx)
 
     def reaction_should_be_removed(self, reaction):
-        poll_handler = list(filter(lambda p: p.poll.bot_message is not None and
+        poll_handler = list(filter(lambda p: (p.poll.bot_message is not None and
                                              p.poll.bot_message.id == reaction.message.id and
-                                             p.poll.is_active,
-                              self.current_polls))
+                                             p.poll.is_active) or
+                                             p.poll.duration == -1,
+                                   self.current_polls))
         if len(poll_handler) == 0:
             return False
         poll_handler = poll_handler[0]
         return reaction.emoji not in poll_handler.poll.get_reaction_emojis()
-
 
 
 class PollCommand:
