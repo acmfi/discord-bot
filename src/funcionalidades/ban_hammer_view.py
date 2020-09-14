@@ -20,14 +20,13 @@ class BanHammerView(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-
-    print("------------", censor_command.get_command_n_aliases())
-
+        self.hammer = BanHammer()
+    
     @commands.command(name=censor_command.name, aliases=censor_command.aliases, brief=censor_command.brief, \
                       description=censor_command.description, usage=censor_command.usage)
     @commands.has_role('Junta')
     async def ban_word(self, ctx):
-        await ctx.send(BanHammer().add_word_blacklist(ctx.message))
+        await ctx.send(self.hammer.add_word_blacklist(ctx.message))
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -41,7 +40,7 @@ class BanHammerView(commands.Cog):
         if (type(message.author) is user.User):  # Está interactuando con el bot, no en el canal general
             return None
 
-        forbidden_words_used = BanHammer().get_forbidden_words(message=message,
+        forbidden_words_used = self.hammer.get_forbidden_words(message=message,
                                                                commands_name=self.censor_command.get_command_n_aliases())
         if forbidden_words_used:
             # Delete the message
@@ -57,7 +56,7 @@ class BanHammerView(commands.Cog):
                       description=uncensor_command.description, usage=uncensor_command.usage)
     @commands.has_role('Junta')
     async def unban_word(self, ctx):
-        await ctx.send(BanHammer().uncensor_word(ctx.message))
+        await ctx.send(self.hammer.uncensor_word(ctx.message))
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):

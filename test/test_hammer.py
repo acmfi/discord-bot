@@ -42,6 +42,8 @@ def test_several_insults():
     assert len(Hammer.get_forbidden_words(SimulatedMessage("Eres muy tonto, imbécil y bacterio", "Santi", "Normal_User"), commands_name="")) == 3
 
 
+
+
 def test_add_new_word():
     Hammer.add_word_blacklist(SimulatedMessage("!censor PalabraABanearTest", "Santi", "Junta"))
     load_BLACKLIST()  

@@ -17,23 +17,24 @@ def similar_word(message):
     # More than 80% similarity
 
 
-with open('src/blacklist_insultos.txt', 'r') as f:
-    BLACKLIST = [line.strip().casefold()
-                 for line in f if line.strip().casefold() != ""]
+
 
 
 class BanHammer():
+    with open('src/blacklist_insultos.txt', 'r') as f:
+        BLACKLIST = [line.strip().casefold() for line in f if line.strip().casefold() != ""]
+    
     def __init__(self):
-        self.blacklist = BLACKLIST
+        pass
 
     def add_word_blacklist(self, message):
         word = message.content.split(" ", 1)[1]
-        if word in self.blacklist:
+        if word in BanHammer.BLACKLIST:
             return "La palabra ya estaba baneada"
         else:
             with open("src/blacklist_insultos.txt", "a") as file:
                 file.write("\n" + word)
-            self.blacklist.append(word)
+            BanHammer.BLACKLIST.append(word)
             return 'Palabra censurada correctamente :)'
 
     def get_forbidden_words(self, message, commands_name):
@@ -46,12 +47,12 @@ class BanHammer():
 
     def uncensor_word(self, message):
         word = message.content.split(" ", 1)[1]
-        if word in self.blacklist:
+        if word in BanHammer.BLACKLIST:
             with open("src/blacklist_insultos.txt", "w") as file:
-                for line in self.blacklist:
+                for line in BanHammer.BLACKLIST:
                     if line.strip("\n") != word and line != "":
                         file.write("\n" + line)
-            self.blacklist.remove(word)
+            BanHammer.BLACKLIST.remove(word)
             return 'Palabra descensurada correctamente :)'
         else:
             return "La palabra no está baneada, por lo que no se ha removido"
