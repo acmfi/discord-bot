@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from src.util import VOICE_PERMITTED_ROLES_NAMES, have_permitted_rol, str_permitted_roles_names
+from src.lib import VOICE_PERMITTED_ROLES_NAMES, have_permitted_rol, str_permitted_roles_names
 
 
 def setup(bot):
