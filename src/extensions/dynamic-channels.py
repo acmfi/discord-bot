@@ -27,5 +27,5 @@ class DynamicChannels(commands.Cog):
                     if str(channel).casefold() == both_channels[0]:
                         await channel.set_permissions(member,read_messages=True, send_messages=True)
 
-        except discord.ext.commands.BotMissingPermissions as de:
+        except discord.ext.commands.BotMissingPermissions:
             print("Bot is missing permissions to complete this command (Dynamic channels)")
