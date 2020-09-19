@@ -1,8 +1,14 @@
 import pytest
 
-from src.extensions.poll import InvalidInputException, MultipleOptionPollModel, PollCommand, PollModel, Emoji, EMOJIS, \
-    PollOption, \
-    YesOrNoPollModel, FlagsPollCommand, seconds2str, InvalidFlagException, parse_flag_value
+from src.extensions.logic.exceptions.exceptions import InvalidFlagException, InvalidInputException
+from src.extensions.logic.poll.command import PollCommand
+from src.extensions.logic.poll.model import PollModel
+from src.extensions.logic.poll.option import PollOption
+from src.extensions.logic.poll.flags import PollFlagsCommand
+from src.extensions.logic.poll.handler import PollHandler
+from src.extensions.logic.poll.multiple_option import MultipleOptionPollModel
+from src.extensions.logic.poll.yesorno import YesOrNoPollModel
+from src.extensions.logic.poll.emoji import Emoji, EMOJIS
 
 
 class CleanContent:
@@ -35,7 +41,7 @@ def get_ctx(question, options, flags):
 
 
 def get_variables(question, options, given_flags=[], need_expected_poll=True):
-    flags = [FlagsPollCommand(f[1] != '', f[0], "", "", None if f[1] == '' else f[1])
+    flags = [PollFlagsCommand(f[1] != '', f[0], "", "", None if f[1] == '' else f[1])
              for f in given_flags]
     discord_format_args = get_discord_format_args(question, options, flags)
     ctx = get_ctx(question, options, flags)
@@ -48,7 +54,8 @@ def get_variables(question, options, given_flags=[], need_expected_poll=True):
 
 
 def test_parser1():
-    poll, _, expected_poll = get_variables("This is a question", ["Option 1", "Option 2"])
+    poll, _, expected_poll = get_variables(
+        "This is a question", ["Option 1", "Option 2"])
     assert poll == expected_poll
 
     expected_str = "**This is a question**\n\n" \
@@ -64,38 +71,44 @@ def test_parser2():
 
 def test_parser3():
     poll, _, expected_poll = get_variables("This is a question",
-                                                            ["o1", "o2", "o3", "o4", "o5", "o6", "o7", "o8", "o9",
-                                                             "o10"])
+                                           ["o1", "o2", "o3", "o4", "o5", "o6", "o7", "o8", "o9",
+                                            "o10"])
     assert poll == expected_poll
 
 
 def test_parser4():
-    poll, _, expected_poll = get_variables("This is a question", ["o1", "o2"], [("no-time", "")])
+    poll, _, expected_poll = get_variables(
+        "This is a question", ["o1", "o2"], [("no-time", "")])
     assert poll == expected_poll
 
 
 def test_parser5():
-    poll, _, expected_poll = get_variables("This is a question", ["o1", "o2"], [("no-time", "")])
+    poll, _, expected_poll = get_variables(
+        "This is a question", ["o1", "o2"], [("no-time", "")])
     assert poll == expected_poll
 
 
 def test_parser6():
-    poll, _, expected_poll = get_variables("This is a question", ["o1", "o2"], [("time", "5m")])
+    poll, _, expected_poll = get_variables(
+        "This is a question", ["o1", "o2"], [("time", "5m")])
     assert poll == expected_poll
 
 
 def test_parser7():
-    poll, _, expected_poll = get_variables("This is a question", ["o1", "o2"], [("no-time", "")])
+    poll, _, expected_poll = get_variables(
+        "This is a question", ["o1", "o2"], [("no-time", "")])
     assert poll == expected_poll
 
 
 def test_parser8():
-    poll, _, expected_poll = get_variables("This is a question", [], [("time", "5m")])
+    poll, _, expected_poll = get_variables(
+        "This is a question", [], [("time", "5m")])
     assert poll == expected_poll
 
 
 def test_parser9():
-    poll, _, expected_poll = get_variables("This is a question", [], [("no-time", "")])
+    poll, _, expected_poll = get_variables(
+        "This is a question", [], [("no-time", "")])
     assert poll == expected_poll
 
 
@@ -105,24 +118,25 @@ def test_help():
 
 
 def test_flags1():
-    assert parse_flag_value("time", "57s") == 57
+    assert PollFlagsCommand.parse_flag_value(None, "time", "57s") == 57
 
 
 def test_flags2():
-    assert parse_flag_value("time", "2m") == 2 * 60
+    assert PollFlagsCommand.parse_flag_value(None, "time", "2m") == 2 * 60
 
 
 def test_flags3():
-    assert parse_flag_value("time", "3h") == 3 * 60 * 60
+    assert PollFlagsCommand.parse_flag_value(None, "time", "3h") == 3 * 60 * 60
 
 
 def test_flags4():
-    assert parse_flag_value("time", "1d") == 1 * 24 * 60 * 60
+    assert PollFlagsCommand.parse_flag_value(
+        None, "time", "1d") == 1 * 24 * 60 * 60
 
 
 def test_flags5():
-    with pytest.raises(InvalidFlagException ):
-        parse_flag_value("time", "8ns")
+    with pytest.raises(InvalidFlagException):
+        PollFlagsCommand.parse_flag_value(None, "time", "8ns")
 
 
 def test_invalid_input1():
@@ -138,7 +152,8 @@ def test_invalid_input2():
 def test_invalid_input3():
     with pytest.raises(InvalidInputException):
         get_variables("This is a question",
-                      ["o1", "o2", "o3", "o4", "o5", "o6", "o7", "o8", "o9", "o10", "o11"], [],
+                      ["o1", "o2", "o3", "o4", "o5", "o6",
+                          "o7", "o8", "o9", "o10", "o11"], [],
                       False)
 
 
@@ -150,16 +165,17 @@ def test_invalid_input4():
 
 def test_invalid_input5():
     with pytest.raises(InvalidFlagException):
-        get_variables("This is a question", ["o1", "o2"], [("invalid-flag", "")])
+        get_variables("This is a question", [
+                      "o1", "o2"], [("invalid-flag", "")])
 
 
 def test_invalid_flag1():
     with pytest.raises(InvalidFlagException):
-        FlagsPollCommand(True, "", "", [], None, None)
+        PollFlagsCommand(True, "", "", [], None, None)
 
 
 def test_invalid_flag2():
-    flag = FlagsPollCommand(True, "", "", [], None, "default_value")
+    flag = PollFlagsCommand(True, "", "", [], None, "default_value")
     assert flag.value_input == "default_value"
 
 
@@ -174,7 +190,25 @@ def test_create_option2():
     option_str = "This is an option"
     option = PollOption(option_str).set_keycap_emoji(3)
     expected = PollOption(option_str)
-    expected.emoji = Emoji(EMOJIS["short"][2], EMOJIS["unicode"][2])
+    expected.emoji = Emoji().number(2)
+    assert option == expected
+
+
+def test_create_option3():
+    option_str = "This is an option"
+    option = PollOption(option_str).set_yesno_emoji("tick")
+    expected = PollOption
+    expected.option_str = option_str
+    expected.emoji = Emoji().specific(":white_check_mark:", '\U00002705')
+    assert option == expected
+
+
+def test_create_option4():
+    option_str = "This is an option"
+    option = PollOption(option_str).set_yesno_emoji("cross")
+    expected = PollOption
+    expected.option_str = option_str
+    expected.emoji = Emoji().specific(":x:", '\U0000274c')
     assert option == expected
 
 
@@ -196,39 +230,39 @@ def test_create_option4():
 
 def test_seconds2str1():
     seconds = 55
-    assert "55s" == seconds2str(seconds)
+    assert "55s" == PollHandler.seconds2str(None, seconds)
 
 
 def test_seconds2str2():
     seconds = 120
-    assert "2m" == seconds2str(seconds)
+    assert "2m" == PollHandler.seconds2str(None, seconds)
 
 
 def test_seconds2str3():
     seconds = 546
-    assert "9m y 6s" == seconds2str(seconds)
+    assert "9m y 6s" == PollHandler.seconds2str(None, seconds)
 
 
 def test_seconds2str4():
     seconds = 650
-    assert "10m y 50s" == seconds2str(seconds)
+    assert "10m y 50s" == PollHandler.seconds2str(None, seconds)
 
 
 def test_seconds2str5():
     seconds = 35780
-    assert "9h y 56m" == seconds2str(seconds)
+    assert "9h y 56m" == PollHandler.seconds2str(None, seconds)
 
 
 def test_seconds2str6():
     seconds = 43200
-    assert "12h" == seconds2str(seconds)
+    assert "12h" == PollHandler.seconds2str(None, seconds)
 
 
 def test_seconds2str7():
     seconds = 100001
-    assert "1d y 3h" == seconds2str(seconds)
+    assert "1d y 3h" == PollHandler.seconds2str(None, seconds)
 
 
 def test_seconds2str8():
     seconds = 175000
-    assert "2d" == seconds2str(seconds)
+    assert "2d" == PollHandler.seconds2str(None, seconds)
