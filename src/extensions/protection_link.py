@@ -15,6 +15,12 @@ def setup(bot):
 
 class ProtectionLinkView(commands.Cog):
     def __init__(self, bot, link_connection):
+        """init function
+
+        Args:
+            bot (discord.Bot): the main discord bot
+            link_connection (multiprocessing.Connection): this pipe connection can send invitation link to apiserver process, it a duplex comunication
+        """
         self.bot = bot
         self.link_connection = link_connection
         self.send_invitation_link.start()
@@ -24,6 +30,8 @@ class ProtectionLinkView(commands.Cog):
 
     @tasks.loop(seconds=5.0)
     async def send_invitation_link(self):
+        """when it receive some signal from Connection it will prepare the invitation link and send with same way
+        """
         # try:
         #     await self.bot.loop.run_in_executor(None, self.link_connection.recv)
         #     await self.bot.loop.run_in_executor(None, self.link_connection.send, "https://discord.gg/BW2Cjn")
