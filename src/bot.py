@@ -5,11 +5,12 @@ import os
 
 bot = commands.Bot(command_prefix='¡')
 
-TOKEN = open('token.txt', 'r').read()
+with open('src/token.txt', 'r') as token_file:
+    TOKEN = token_file.read()
 
 
-for file in os.listdir('./funcionalidades'):
+for file in os.listdir('src/extensions'):
     if file.endswith('.py'):
-        bot.load_extension(f'funcionalidades.{file[:-3]}')
+        bot.load_extension(f'extensions.{file[:-3]}')
 
 bot.run(TOKEN)
