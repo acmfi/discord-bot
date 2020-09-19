@@ -12,7 +12,7 @@ def have_permitted_rol(autor_roles):
 
 def similar_word(message):
     words = message.split(" ")
-    forbidden = [insult for word in words for insult in BLACKLIST if SequenceMatcher(None, insult, word).ratio() > 0.8]
+    forbidden = [insult for word in words for insult in BanHammer.BLACKLIST if SequenceMatcher(None, insult, word).ratio() > 0.8]
     return forbidden
     # More than 80% similarity
 

@@ -1,8 +1,8 @@
 from discord.ext import commands
 from discord import user
 
-from funcionalidades.ban_hammer import BanHammer
-from funcionalidades.command import Command
+from extensions.logic.ban_hammer import BanHammer
+from extensions.logic.lib.command import Command
 
 
 def setup(bot):
@@ -24,6 +24,7 @@ class BanHammerView(commands.Cog):
     
     @commands.command(name=censor_command.name, aliases=censor_command.aliases, brief=censor_command.brief, \
                       description=censor_command.description, usage=censor_command.usage)
+                      
     @commands.has_role('Junta')
     async def ban_word(self, ctx):
         await ctx.send(self.hammer.add_word_blacklist(ctx.message))

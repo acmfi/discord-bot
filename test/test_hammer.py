@@ -1,5 +1,5 @@
 import pytest
-from src.funcionalidades.ban_hammer import BanHammer, have_permitted_rol
+from src.extensions.logic.ban_hammer import BanHammer, have_permitted_rol
 
 
 class SimulatedMessage():
