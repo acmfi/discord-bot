@@ -1,7 +1,7 @@
 src/token.txt
 pytest_cache/
 vs/
-vscode/
+.vscode/
 src/__pycache__/
 src/extensions/__pycache__
 test/__pycache__/
