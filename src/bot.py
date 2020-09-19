@@ -1,5 +1,5 @@
 from discord.ext import commands
-from multiprocessing import Process, Queue
+from multiprocessing import Process, Queue, Pipe
 from apiserver import ApiServer
 import json
 
@@ -17,7 +17,9 @@ async def on_ready():
     print('------------------')
 
 bot.post_queue = Queue()
-apiserver = ApiServer(bot.post_queue)
+bot.link_connection, connection = Pipe(duplex=True)
+apiserver = ApiServer(bot.post_queue, connection)
 apiserver.start()
 bot.load_extension('extensions.resendpost')
+bot.load_extension('extensions.protection_link')
 bot.run(bot.CONF["token"])

@@ -5,14 +5,16 @@ import json
 
 class ApiServer(Process):
 
-    def __init__(self, post_queue):
+    def __init__(self, post_queue, link_connection):
         """init
 
         Args:
-            post_queue (Queue): queue of the posts, resoure shared with the main bot
+            post_queue (Queue): queue of posts, resoure shared with the main bot
+            link_pipe(Connection): 
         """
         super(ApiServer, self).__init__()
         self.post_queue = post_queue
+        self.link_connection = link_connection
         with open('src/bot_conf.json', 'r') as conf_file:
             self.USERS = (json.load(conf_file))["api_users"]
         self.api = Flask(__name__)
@@ -28,6 +30,16 @@ class ApiServer(Process):
                 return "El usario o la contraseña no es correcto"
             self.post_queue.put(post)
             return 'OK'
+
+        @self.api.route('/server/link_invitation', methods=['POST'])
+        def get_link_invitation():
+            post = request.json
+            if not self.verify_user(post["user"]):
+                print("EL equipo", request.remote_addr,
+                      "intento acceder con con algún dato erróneo")
+                return "El usario o la contraseña no es correcto"
+            self.link_connection.send("get")
+            return self.link_connection.recv()
 
     def verify_user(self, user):
         """check if username and password is correct
