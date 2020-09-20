@@ -12,10 +12,10 @@ class PollManager:
     """
 
     def __init__(self):
-    """
-    Initializes the object
-    """
-    self.current_polls = []
+        """
+        Initializes the object
+        """
+        self.current_polls = []
 
     async def add(self, poll):
         """
@@ -26,7 +26,7 @@ class PollManager:
         """
         poll_handler = PollHandler(poll)
         self.current_polls.append(poll_handler)
-        await poll_handler.send_poll_n_react(ctx)
+        await poll_handler.send_poll_n_react()
 
     def reaction_should_be_removed(self, reaction):
         """
