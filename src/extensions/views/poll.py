@@ -21,7 +21,7 @@ class Poll(commands.Cog):
             print(log)
 
         try:
-            poll, is_help = PollCommand().parser(args, ctx)
+            poll, is_help = PollCommand().parser(args, ctx.message)
             if is_help:
                 await send_msg(f"```{PollCommand().get_usage()}```", f"Log: Help requested {ctx.message.clean_content}")
                 return
@@ -39,7 +39,7 @@ class Poll(commands.Cog):
                            f"Log: Invalid input {ctx.message.clean_content} || {e}")
             return
 
-        await self.poll_manager.add(ctx, poll)
+        await self.poll_manager.add(poll)
 
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction, user):

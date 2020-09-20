@@ -8,7 +8,7 @@ from src.extensions.logic.poll.flags import PollFlagsCommand
 from src.extensions.logic.poll.handler import PollHandler
 from src.extensions.logic.poll.multiple_option import MultipleOptionPollModel
 from src.extensions.logic.poll.yesorno import YesOrNoPollModel
-from src.extensions.logic.poll.emoji import Emoji, EMOJIS
+from src.extensions.logic.poll.emoji import Emoji, NUMBER_EMOJIS
 
 
 class CleanContent:
@@ -45,7 +45,7 @@ def get_variables(question, options, given_flags=[], need_expected_poll=True):
              for f in given_flags]
     discord_format_args = get_discord_format_args(question, options, flags)
     ctx = get_ctx(question, options, flags)
-    poll, is_help = PollCommand().parser(discord_format_args, ctx)
+    poll, is_help = PollCommand().parser(discord_format_args, ctx.message)
     if need_expected_poll:
         expected_poll = get_expected_poll(question, options, flags)
         return poll, is_help, expected_poll

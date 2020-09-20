@@ -9,7 +9,32 @@ CLOCKS_EMOJI = [f":clock{hour}:" for hour in range(1, 13)]
 
 
 class PollHandler:
-    def __init__(self, ctx, poll: PollModel):
+    """This class will handle the poll
+
+    If the poll has time, then it will refresh every REFRESH_RATE seconds value given in 
+    default_values.py the message with the poll with the time left for voting. For that purpose, 
+    the interval will be created using rx. See more details on Reactive Programming for this (variables
+    ob and sub). For editing the message, a new thread will be created each time, so do not block 
+    the main thread (variable _loop)
+
+    Attributes:
+        poll(PollModel):    Object with the poll
+        ob(Observable):     USELESS - Will be removed
+        sub(Observable):    Observable with the interval. Every REFRESH_RATE seconds will produce a value 
+        _loop(Observable):  Current event loop. See more details in asyncio. We will use it to create a 
+                            new thread
+    """
+
+    def __init__(self, poll: PollModel):
+        """
+        Initializes the class. If there is no duration for the poll or is inactive, it only will initialize 
+        with the poll attribute
+
+        Attributes:
+            poll(PollModel):    Object with the poll
+        """
+        # TODO check if is active
+        # TODO Remove self.ob
         self.poll = poll
 
         if self.poll.duration == -1:
@@ -27,21 +52,41 @@ class PollHandler:
 
         self.subscribe()
 
-    async def send_poll_n_react(self, ctx):
-        # Send the poll
-        self.poll.bot_message = await ctx.message.channel.send(str(self.poll))
+    async def send_poll_n_react(self):
+        """
+        Sends a message with the poll to the channel which the poll was invoked. Then, for each
+        option, the bot will react with the corresponding emoji so users can vote using those 
+        reaction. Any other reaction will be removed.
+        """
+        # Sends the poll
+        self.poll.bot_message = await self.poll.user_message.channel.send(str(self.poll))
 
-        # React to the message with the different emojis associated to the options
+        # Reacts to the message with the different emojis associated to the options
         [await self.poll.bot_message.add_reaction(emoji) for emoji in self.poll.get_reaction_emojis()]
 
     def subscribe(self):
+        """
+        It subscribes to the Observable. For each iteration will call __on_next or __on_error if something
+        went wrong. When finishing it, __on_completed will be executed
+        """
         self.sub.subscribe(
             on_next=self.__on_next,
-            on_error=lambda e: self.__on_error(e),
+            on_error=self.__on_error,
             on_completed=self.__on_completed
         )
 
     def __on_next(self, i):
+        """It will update the message with the poll with the time left.
+
+        It will calculate the time left rounded to 0 or 5 seconds and then will use seconds2str() to create a more
+        radeble version of the time. Then it will create the message with the original content of the message. with
+        a small animation of a clock moving the clock hands each iteration. For editting the message, the __edit_msg
+        function will be used
+
+        Args:
+            i(number): Number of the iteration
+        """
+        # TODO Change is_active lifecycle
         self.poll.is_active = True
         seconds_left = int(self.poll.created_at +
                            self.poll.duration - time.time())
@@ -53,15 +98,37 @@ class PollHandler:
         pass
 
     def __on_completed(self):
+        """
+        It will update the message with the poll: "Poll has ended" and some emojis
+        """
         self.poll.is_active = False
         poll_str = f"{str(self.poll)}\n\n:male_dancer::dancer:  La votación ha terminado  :male_dancer::dancer:"
         self.__edit_msg(poll_str)
 
     def __edit_msg(self, msg):
+        """
+        It will update the message with the poll. It will create a new thread for that so it does not block main
+        thread.
+
+        Args:
+            msg(string): String with the new message content
+        """
         asyncio.run_coroutine_threadsafe(
             self.poll.bot_message.edit(content=msg), self._loop)
 
     def seconds2str(self, seconds):
+        """
+        It will convert the seconds to a string more readable for humans. As an example:
+            - 120 -> 2m
+            - 650 -> 10m y 50s
+            - 35780 -> 9h y 56m
+
+        Args:
+            seconds(number): Amount of seconds
+
+        Returns
+            string: Human version of the seconds
+        """
         n_days = int(seconds / (24 * 60 * 60))
         if n_days > 0:
             n_hours = int((seconds % (24 * 60 * 60)) / (60 * 60))
