@@ -1,10 +1,10 @@
 src/token.txt
-pytest_cache/
-vs/
-.vscode/
 src/__pycache__/
 src/extensions/__pycache__
 test/__pycache__/
+pytest_cache/
+vs/
+vscode/
 *.pyc_
 .vscode/
 .vs/
