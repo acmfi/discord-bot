@@ -1,5 +1,6 @@
 import pytest
-from src.Extensions.logic.ban_hammer import BanHammer, have_permitted_rol
+from src.Extensions.logic.ban_hammer import BanHammer
+from src.Extensions.logic.lib.roles_functions import have_permitted_rol, BAN_HAMMER_PERMITTED_ROLES_NAMES
 
 
 class SimulatedMessage:
@@ -69,8 +70,8 @@ def test_remove_nonexisting_word():
 
 
 def test_correct_role():
-    assert have_permitted_rol(SimulatedAuthor("User", "Junta").roles)
+    assert have_permitted_rol(SimulatedAuthor("User", "Junta").roles, BAN_HAMMER_PERMITTED_ROLES_NAMES)
 
 
 def test_not_correct_role():
-    assert not have_permitted_rol(SimulatedAuthor("User", "Noob").roles)
+    assert not have_permitted_rol(SimulatedAuthor("User", "Noob").roles, BAN_HAMMER_PERMITTED_ROLES_NAMES)
