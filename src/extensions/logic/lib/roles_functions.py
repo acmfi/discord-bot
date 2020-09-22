@@ -1,5 +1,5 @@
-COMMAND_PREFIX = '!'
 VOICE_PERMITTED_ROLES_NAMES = ('Ponente', 'Admin')
+BAN_HAMMER_PERMITTED_ROLES_NAMES = ('Junta', 'Admin')
 
 
 def have_permitted_rol(autor_roles, permitted_roles):

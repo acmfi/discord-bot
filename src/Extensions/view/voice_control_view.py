@@ -1,30 +1,29 @@
 import discord
 from discord.ext import commands
-from src.lib import VOICE_PERMITTED_ROLES_NAMES, have_permitted_rol, str_permitted_roles_names
 
+from src.Extensions.logic.lib.command import Command
+from src.Extensions.logic.voice_control import VoiceControl
 
 def setup(bot):
-    bot.add_cog(VoiceControl(bot))
+    bot.add_cog(VoiceControlView(bot))
 
+class VoiceControlView(commands.Cog):
 
-class VoiceControl(commands.Cog):
+    levantados_command = Command(name='Levantados', aliases=['levantados'],
+                      brief='Muestra los usuarios que han levantado la mano',
+                      description='Muestra, en orden de llegada, los usuarios que han levantado la mano')
+
 
     def __init__(self, bot_):
         self.bot = bot_
         self.levantados_ = []
+        self.voice_control = VoiceControl()
 
-    @commands.command(name='Levantados', aliases=['levantados'],
-                      brief='Muestra los usuarios que han levantado la mano',
-                      description='Muestra, en orden de llegada, los usuarios que han levantado la mano')
+    @commands.command(name=levantados_command.name, aliases=levantados_command.aliases,
+                      brief=levantados_command.brief,
+                      description=levantados_command.description)
     async def levantados(self, ctx):
-        message = ctx.message
-        message_channel = message.channel
-        if len(self.levantados_) == 0:
-            await message_channel.send('Nadie ha levantado la mano')
-        else:
-            result = 'Los usuarios que han levantado la mano, en orden de llegada ' \
-                     'siendo el de mas a la izquierda el primero, son:\n' + ", ".join(self.levantados_)
-            await message_channel.send(result)
+            await ctx.message.channel.send(self.voice_control.levantados_logic())
 
     @commands.command(name='LevantarMano', aliases=['levantarmano', 'Levantar', 'levantar'],
                       brief='Levanta la mano(solicita desilencio)',
