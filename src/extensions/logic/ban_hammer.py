@@ -19,11 +19,8 @@ def similar_word(message):
 
 
 class BanHammer:
-    with open('src/blacklist_insultos.txt', 'r') as f:
+    with open('src/static/blacklist_insultos.txt', 'r') as f:
         BLACKLIST = [line.strip().casefold() for line in f if line.strip().casefold() != ""]
-
-    def __init__(self):
-        pass
 
     @staticmethod
     def add_word_blacklist(message):

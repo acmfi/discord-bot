@@ -1,8 +1,8 @@
 from discord.ext import commands
 from discord import user
 
-from Extensions.logic.ban_hammer import BanHammer
-from Extensions.logic.lib.command import Command
+from src.Extensions.logic.ban_hammer import BanHammer
+from src.Extensions.logic.lib.command import Command
 
 
 def setup(bot):
