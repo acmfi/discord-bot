@@ -22,7 +22,9 @@ class SimulatedRoles:
 
 def load_BLACKLIST():
     global BLACKLIST
-    with open('src/static/blacklist_insultos.txt', 'r') as f:
+    with open(
+            r'C:\Users\Daniel\OneDrive - Universidad Politécnica de Madrid\Estudios\Python\discord-bot\src\static\blacklist_insultos.txt',
+            'r') as f:
         BLACKLIST = [line.strip().casefold()
                      for line in f if line.strip().casefold() != ""]
 
