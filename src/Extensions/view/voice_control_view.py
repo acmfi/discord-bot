@@ -79,10 +79,10 @@ class VoiceControlView(commands.Cog):
     @staticmethod
     async def change_voice(output_members, channel):
         if len(output_members[2]) > 0:
-            if output_members == MUTE:
+            if output_members[1] == MUTE:
                 for member in output_members[2]:
                     await member.edit(mute=True)
-            elif output_members == UNMUTE:
+            elif output_members[1] == UNMUTE:
                 for member in output_members[2]:
                     await member.edit(mute=False)
 

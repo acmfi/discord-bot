@@ -44,7 +44,7 @@ class VoiceControl:
         return result
 
     @staticmethod
-    async def silenciar_logic(message):
+    def silenciar_logic(message):
         message_author = message.author
         message_channel = message.channel
         mentions = message.mentions
@@ -83,7 +83,7 @@ class VoiceControl:
         return result
 
     @staticmethod
-    async def desilenciar_logic(message):
+    def desilenciar_logic(message):
         message_channel = message.channel
         result = ["", UNMUTE, []]
 
