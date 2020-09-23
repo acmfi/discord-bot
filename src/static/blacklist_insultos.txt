@@ -21,9 +21,9 @@ alela
 alelada
 alelado
 alelao
-alfeã±ique
+alfeÃ±ique
 alicate
-alimaã±a
+alimaÃ±a
 almojonao
 almorrana
 alobao
@@ -93,7 +93,7 @@ bocafiemo
 boiano
 bolascombro
 boludo
-bordegã s
+bordegÃ s
 borinot
 borracha
 borracho
@@ -101,10 +101,10 @@ borrico
 bosses tristes
 bosuso
 botabancals
-boã±iga
+boÃ±iga
 brasas
 brincacepas
-brã¨tol
+brÃ¨tol
 bufavidres
 bujarra
 bujarron
@@ -145,7 +145,7 @@ cagaportales
 cagarro
 cagarruta
 cagarrutas
-caguiã±as
+caguiÃ±as
 caharran
 calamidad
 calenturas
@@ -159,7 +159,7 @@ cansa almas
 cansaliebres
 cansina
 cansino
-cantamaã±anas
+cantamaÃ±anas
 cap d'ase
 cap de fava
 cap de polla
@@ -180,7 +180,7 @@ caracabello
 caracandao
 caracarton
 carachancla
-caracoã±o
+caracoÃ±o
 caracul
 caraculo
 caraespatula
@@ -292,7 +292,7 @@ desgraciada
 desgraciado
 desgraciao
 despreciable
-destiã±e rubias
+destiÃ±e rubias
 desvarata bailes
 desvirgagallines
 don nadie
@@ -307,7 +307,7 @@ en garrovillas
 enderezaplatanos
 energumena
 energumeno
-engaã±a baldosas
+engaÃ±a baldosas
 engendro
 enjuto
 ennortao
@@ -328,14 +328,14 @@ estorbo
 estripa gasones
 estupida
 estupido
-estã²til
+estÃ²til
 eunuco
 exelol
 facha
 facinerosa
 facineroso
 faino ti lanjran
-falfaã±ote
+falfaÃ±ote
 fanegas
 fanequero
 faniceros
@@ -345,7 +345,7 @@ fariseo
 farraguas
 farsante
 fato
-fazaã±eiro
+fazaÃ±eiro
 fea
 feminazi
 feo
@@ -379,9 +379,9 @@ garraibat
 garroso
 garrulo
 gaznapiro
-gaã±an
+gaÃ±an
 gili
-gilicoã±o
+gilicoÃ±o
 gilipichi
 gilipichis
 gilipipas
@@ -439,7 +439,7 @@ lameculos
 lamehuevos
 lameplatos
 lamerajas
-lameã±ordos
+lameÃ±ordos
 langran
 lapa
 lareta
@@ -560,7 +560,7 @@ mugroso
 napbuf
 necia
 necio
-niã±ato
+niÃ±ato
 notas
 nugallan
 oligofrenico
@@ -634,7 +634,7 @@ peinaovejas
 peinapochas
 pelabombillas
 pelacantes
-pelacaã±as
+pelacaÃ±as
 pelagatos
 pelalimones
 pelamangos
@@ -674,7 +674,7 @@ piripi
 pisamostoh
 pisapedales
 pisaverde
-pitaã±oso
+pitaÃ±oso
 pitufo
 pixapins
 pixatinters
@@ -702,7 +702,7 @@ puta
 putapenico
 putos
 putot
-pã²tol
+pÃ²tol
 rabo
 rata
 remenacacas
@@ -736,7 +736,7 @@ sietemesino
 sinsorgo
 sinsustancia
 somugroso
-somã¨r
+somÃ¨r
 soplagaitas
 soplanucas
 soplasartenes
@@ -746,7 +746,7 @@ subnormala
 subnormalo
 subnorpollas
 sunormal
-tacaã±o
+tacaÃ±o
 tap de suro
 tapon de balsa
 tarado
@@ -800,10 +800,10 @@ tros d'ase
 tros de cuoniem
 tros de mula
 tros de puta
-tros de quã²niam
+tros de quÃ²niam
 tuercebotas
 turco
-tã²til
+tÃ²til
 vandalo
 vendehumos
 verga
@@ -831,8 +831,8 @@ zambergo
 zampabollos
 zanahorio
 zangano
-zangã¼angano
-zangã¼ango
+zangÃ¼angano
+zangÃ¼ango
 zarandajo
 zarrapastrosa
 zarrapastroso
