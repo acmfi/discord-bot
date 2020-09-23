@@ -16,7 +16,7 @@ class Bot:
 
     def run(self):
         self.bot.add_listener(self.on_ready)
-        self.bot.load_extension('Extensions.view.voice_control')
+        self.bot.load_extension('Extensions.view.voice_control_view')
         self.bot.run(self.TOKEN)
 
 
