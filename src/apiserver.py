@@ -19,7 +19,7 @@ class ApiServer(Process):
             self.USERS = (json.load(conf_file))["api_users"]
         self.api = Flask(__name__)
 
-        @self.api.route('/sendChannelPost', methods=['POST'])
+        @self.api.route('/server/channel/text/send_notice', methods=['POST'])
         def send_channel_post():
             """put the post (json format) on the post_queue
             """
