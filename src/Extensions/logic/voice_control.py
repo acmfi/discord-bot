@@ -1,3 +1,4 @@
+from Extensions.logic.lib.voice_variables import UNMUTE, MUTE
 from src.Extensions.logic.lib.roles_functions import VOICE_PERMITTED_ROLES_NAMES, have_permitted_rol, \
     str_permitted_roles_names
 
@@ -48,60 +49,61 @@ class VoiceControl:
         message_channel = message.channel
         mentions = message.mentions
         mention_everyone = message.mention_everyone
-        result = ''
+        result = ["", MUTE, []]
 
         if len(mentions) > 0 or mention_everyone:
             if not have_permitted_rol(message_author.roles, VOICE_PERMITTED_ROLES_NAMES):
-                result = f'Solo puedes silenciarte a ti mismo si no eres ' \
-                         f'{str_permitted_roles_names(VOICE_PERMITTED_ROLES_NAMES)}'
+                result[0] = f'Solo puedes silenciarte a ti mismo si no eres ' \
+                            f'{str_permitted_roles_names(VOICE_PERMITTED_ROLES_NAMES)}'
                 return result
 
             if mention_everyone:
                 for member in message_channel.members:
                     if member.voice is not None and not have_permitted_rol(member.roles, VOICE_PERMITTED_ROLES_NAMES):
-                        await member.edit(mute=True)
-                result = "```css\n[Silencio todo el mundo]```"
+                        result[2].append(member)
+                result[0] = "```css\n[Silencio todo el mundo]```"
             else:
                 for member in mentions:
                     if have_permitted_rol(member.roles, VOICE_PERMITTED_ROLES_NAMES):
-                        result = f'No puedes silenciar a  {member.mention}  ' \
-                                 f'ya que es {str_permitted_roles_names(VOICE_PERMITTED_ROLES_NAMES)}'
+                        result[0] = f'No puedes silenciar a  {member.mention}  ' \
+                                    f'ya que es {str_permitted_roles_names(VOICE_PERMITTED_ROLES_NAMES)}'
                     elif member.voice is None:
-                        result = f'No puedes silenciar a {member.mention} si no está conectado a un canal de voz'
+                        result[0] = f'No puedes silenciar a {member.mention} si no está conectado a un canal de voz'
                     else:
-                        await member.edit(mute=True)
-                        result = f'A {member.mention} le ha silenciado un ' \
-                                 f'{str_permitted_roles_names(VOICE_PERMITTED_ROLES_NAMES)}'
+                        result[2].append(member)
+                        result[0] = f'A {member.mention} le ha silenciado un ' \
+                                    f'{str_permitted_roles_names(VOICE_PERMITTED_ROLES_NAMES)}'
         else:  # No ha mencionado a nadie (autosilenciar)
             if message_author.voice is None:  # Si no estas en ningun canal de voz, VoiceState es None
-                result = 'No puedes silenciarte si no estas conectado a un canal de voz'
+                result[0] = 'No puedes silenciarte si no estas conectado a un canal de voz'
             else:
-                await message_author.edit(mute=True)
-                result = f'{message_author.mention} se ha silenciado'
+                result[2].append(message_author)
+                result[0] = f'{message_author.mention} se ha silenciado'
 
         return result
 
     @staticmethod
     async def desilenciar_logic(message):
         message_channel = message.channel
-        result = ''
+        result = ["", UNMUTE, []]
 
         if not have_permitted_rol(message.author.roles, VOICE_PERMITTED_ROLES_NAMES):
-            result = f'No puedes desilenciar si no eres {str_permitted_roles_names(VOICE_PERMITTED_ROLES_NAMES)}'
+            result[0] = f'No puedes desilenciar si no eres {str_permitted_roles_names(VOICE_PERMITTED_ROLES_NAMES)}'
             return result
 
         if message.mention_everyone:
             for member in message_channel.members:
                 if member.voice is not None:
-                    await member.edit(mute=False)
-            result = "```css\n[A hablar todo el mundo]```"
+                    result[2].append(member)
+
+            result[0] = "```css\n[A hablar todo el mundo]```"
         else:
             for member in message.mentions:
                 if member.voice is None:
-                    result = f'No puedes desilenciar a {member.mention} si no está conectado a un canal de voz'
+                    result[0] = f'No puedes desilenciar a {member.mention} si no está conectado a un canal de voz'
                 else:
-                    await member.edit(mute=False)
-                    result = f'A {member.mention} le ha desilenciado un ' \
-                             f'{str_permitted_roles_names(VOICE_PERMITTED_ROLES_NAMES)} :speaking_head:'
+                    result[2].append(member)
+                    result[0] = f'A {member.mention} le ha desilenciado un ' \
+                                f'{str_permitted_roles_names(VOICE_PERMITTED_ROLES_NAMES)} :speaking_head:'
 
         return result

@@ -1,8 +1,9 @@
-from Extensions.logic.lib.roles_functions import str_permitted_roles_names, VOICE_PERMITTED_ROLES_NAMES
 from discord.ext import commands
 
 from src.Extensions.logic.lib.command import Command
 from src.Extensions.logic.voice_control import VoiceControl
+from src.Extensions.logic.lib.roles_functions import str_permitted_roles_names, VOICE_PERMITTED_ROLES_NAMES
+from src.Extensions.logic.lib.voice_variables import MUTE, UNMUTE
 
 
 def setup(bot):
@@ -66,11 +67,23 @@ class VoiceControlView(commands.Cog):
                       description=silenciar_command.description,
                       usage=silenciar_command.usage)
     async def silenciar(self, ctx):
-        await ctx.message.channel.send(self.voice_control.silenciar_logic(ctx.message))
+        await VoiceControlView.change_voice(self.voice_control.silenciar_logic(ctx.message), ctx.message.channel)
 
     @commands.command(name=desilenciar_command.name, aliases=desilenciar_command.aliases,
                       brief=desilenciar_command.brief,
                       description=desilenciar_command.description,
                       usage=desilenciar_command.usage)
     async def desilenciar(self, ctx):
-        await ctx.message.channel.send(self.voice_control.desilenciar_logic(ctx.message))
+        await VoiceControlView.change_voice(self.voice_control.desilenciar_logic(ctx.message), ctx.message.channel)
+
+    @staticmethod
+    async def change_voice(output_members, channel):
+        if len(output_members[2]) > 0:
+            if output_members == MUTE:
+                for member in output_members[2]:
+                    await member.edit(mute=True)
+            elif output_members == UNMUTE:
+                for member in output_members[2]:
+                    await member.edit(mute=False)
+
+        await channel.send(output_members[0])

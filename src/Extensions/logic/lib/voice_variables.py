@@ -1,0 +1,2 @@
+MUTE = 1
+UNMUTE = 0
