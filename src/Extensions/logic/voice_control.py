@@ -55,7 +55,7 @@ class VoiceControl:
             if not have_permitted_rol(message_author.roles, VOICE_PERMITTED_ROLES_NAMES):
                 result[0] = f'Solo puedes silenciarte a ti mismo si no eres ' \
                             f'{str_permitted_roles_names(VOICE_PERMITTED_ROLES_NAMES)}'
-                return result
+                return tuple(result)
 
             if mention_everyone:
                 for member in message_channel.members:
@@ -80,7 +80,7 @@ class VoiceControl:
                 result[2].append(message_author)
                 result[0] = f'{message_author.mention} se ha silenciado'
 
-        return result
+        return tuple(result)
 
     @staticmethod
     def desilenciar_logic(message):
@@ -89,7 +89,7 @@ class VoiceControl:
 
         if not have_permitted_rol(message.author.roles, VOICE_PERMITTED_ROLES_NAMES):
             result[0] = f'No puedes desilenciar si no eres {str_permitted_roles_names(VOICE_PERMITTED_ROLES_NAMES)}'
-            return result
+            return tuple(result)
 
         if message.mention_everyone:
             for member in message_channel.members:
@@ -106,4 +106,4 @@ class VoiceControl:
                     result[0] = f'A {member.mention} le ha desilenciado un ' \
                                 f'{str_permitted_roles_names(VOICE_PERMITTED_ROLES_NAMES)} :speaking_head:'
 
-        return result
+        return tuple(result)
