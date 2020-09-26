@@ -28,7 +28,7 @@ class ProtectionLink(commands.Cog):
         """
         self.send_invitacion_link.cancel()
 
-    @tasks.loop(seconds=5.0)
+    @tasks.loop(seconds=1)
     async def send_invitation_link(self):
         """when it receive some signal from Connection it will prepare the invitation link and send with same way
         """
