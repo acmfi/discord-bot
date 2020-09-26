@@ -17,8 +17,8 @@ async def on_ready():
     print('------------------')
 
 bot.post_queue = Queue()
-bot.link_connection, connection = Pipe(duplex=True)
-apiserver = ApiServer(bot.post_queue, connection)
+bot.link_task_queue = (Queue(), Queue())
+apiserver = ApiServer(bot.post_queue, bot.link_task_queue)
 apiserver.start()
 bot.load_extension('extensions.resendpost')
 bot.load_extension('extensions.protection_link')
