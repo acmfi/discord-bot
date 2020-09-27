@@ -1,6 +1,6 @@
 import pytest
 
-from src.extensions.logic.exceptions.exceptions import InvalidFlagException, InvalidInputException
+from src.extensions.logic.exceptions.exceptions import InvalidFlagException, InvalidInputException, InvalidOptionException
 from src.extensions.logic.poll.command import PollCommand
 from src.extensions.logic.poll.model import PollModel
 from src.extensions.logic.poll.option import PollOption
@@ -214,17 +214,17 @@ def test_create_option4():
 
 def test_create_option3():
     option_str = "Invalid index for emoji"
-    with pytest.raises(Exception):
+    with pytest.raises(InvalidOptionException):
         PollOption(option_str).set_keycap_emoji(0)
-    with pytest.raises(Exception):
+    with pytest.raises(InvalidOptionException):
         PollOption(option_str).set_keycap_emoji(-5)
 
 
 def test_create_option4():
     option_str = "Invalid index for emoji"
-    with pytest.raises(Exception):
+    with pytest.raises(InvalidOptionException):
         PollOption(option_str).set_keycap_emoji(11)
-    with pytest.raises(Exception):
+    with pytest.raises(InvalidOptionException):
         PollOption(option_str).set_keycap_emoji(18)
 
 
