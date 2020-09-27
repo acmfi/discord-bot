@@ -32,10 +32,6 @@ class PollOption:
         Returns:
             PollOption: The object itself
         """
-        # TODO Check this
-        if index < 1 or index > 11:
-            raise Exception(
-                f"Invalid emoji index {index}. Only valid between 0 and 9")
         self.emoji = Emoji().number(index - 1)
         return self
 

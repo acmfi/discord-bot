@@ -1,3 +1,6 @@
+from src.extensions.logic.exceptions.exceptions import InvalidOptionException
+
+
 """
 Dictionary with the emojis for the numbers. There are two versions. The short one will be used for the 
 emojis within the text. But the unicode version will be used for the reaction. These are discord 
@@ -44,7 +47,9 @@ class Emoji:
         Returns:
             Emoji: The object itself
         """
-        # TODO Restriction between 0 and 9
+        if index < 0 or index > 9:
+            raise InvalidOptionException(
+                f"Invalid index {index} for emoji. Only valid between 0 and 9")
         self.short = NUMBER_EMOJIS["short"][index]
         self.unicode = NUMBER_EMOJIS["unicode"][index]
         return self
