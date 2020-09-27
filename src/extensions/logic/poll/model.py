@@ -65,7 +65,7 @@ class PollModel:
         self.poll_str = f"{question}\n\n{options}"
 
     def get_log(self):
-        return f"Log: New poll. Question: {self.question}. Options: {[o.option_str for o in self.options]}"
+        return f"Log: New poll. Question: {self.question}. Options: {[o.content for o in self.options]}"
 
     def __str__(self):
         return self.poll_str

@@ -6,19 +6,19 @@ class PollOption:
     An option of the poll
 
     Attributes
-        option_str(string): The content of the option
+        content(string): The content of the option
         emoji(EmojiOption):       EmojiOption object associated to the option
     """
 
-    def __init__(self, option_str):
+    def __init__(self, content):
         """
         It will create the option object without the emojis. EmojiOptions will be initialized using 
         set_keycap_emoji(for numbers) or set_yesno_emoji(for tick/cross)
 
         Args:
-            option_str(string): The content of the option
+            content(string): The content of the option
         """
-        self.option_str = option_str
+        self.content = content
         self.emoji = None
 
     def set_keycap_emoji(self, index):
@@ -60,7 +60,7 @@ class PollOption:
         Returns:
             string: Option in string format
         """
-        return f"{self.emoji.short}{' ' * 3}{self.option_str}"
+        return f"{self.emoji.short}{' ' * 3}{self.content}"
 
     def __eq__(self, other):
         """
@@ -73,4 +73,4 @@ class PollOption:
             boolean: True if both objects contain the same values. False otherwise.
         """
         if isinstance(other, PollOption):
-            return self.option_str == other.option_str and self.emoji == other.emoji
+            return self.content == other.content and self.emoji == other.emoji

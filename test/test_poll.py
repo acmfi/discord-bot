@@ -180,52 +180,52 @@ def test_invalid_flag2():
 
 
 def test_create_option1():
-    option_str = "This is an option"
-    option = PollOption(option_str)
-    expected = PollOption(option_str)
+    option_content = "This is an option"
+    option = PollOption(option_content)
+    expected = PollOption(option_content)
     assert option == expected
 
 
 def test_create_option2():
-    option_str = "This is an option"
-    option = PollOption(option_str).set_keycap_emoji(3)
-    expected = PollOption(option_str)
+    option_content = "This is an option"
+    option = PollOption(option_content).set_keycap_emoji(3)
+    expected = PollOption(option_content)
     expected.emoji = EmojiOption().number(2)
     assert option == expected
 
 
 def test_create_option3():
-    option_str = "This is an option"
-    option = PollOption(option_str).set_yesno_emoji("tick")
+    option_content = "This is an option"
+    option = PollOption(option_content).set_yesno_emoji("tick")
     expected = PollOption
-    expected.option_str = option_str
+    expected.option_content = option_content
     expected.emoji = EmojiOption().specific(":white_check_mark:", '\U00002705')
     assert option == expected
 
 
 def test_create_option4():
-    option_str = "This is an option"
-    option = PollOption(option_str).set_yesno_emoji("cross")
+    option_content = "This is an option"
+    option = PollOption(option_content).set_yesno_emoji("cross")
     expected = PollOption
-    expected.option_str = option_str
+    expected.option_content = option_content
     expected.emoji = EmojiOption().specific(":x:", '\U0000274c')
     assert option == expected
 
 
 def test_create_option3():
-    option_str = "Invalid index for emoji"
+    option_content = "Invalid index for emoji"
     with pytest.raises(InvalidOptionException):
-        PollOption(option_str).set_keycap_emoji(0)
+        PollOption(option_content).set_keycap_emoji(0)
     with pytest.raises(InvalidOptionException):
-        PollOption(option_str).set_keycap_emoji(-5)
+        PollOption(option_content).set_keycap_emoji(-5)
 
 
 def test_create_option4():
-    option_str = "Invalid index for emoji"
+    option_content = "Invalid index for emoji"
     with pytest.raises(InvalidOptionException):
-        PollOption(option_str).set_keycap_emoji(11)
+        PollOption(option_content).set_keycap_emoji(11)
     with pytest.raises(InvalidOptionException):
-        PollOption(option_str).set_keycap_emoji(18)
+        PollOption(option_content).set_keycap_emoji(18)
 
 
 def test_seconds2str1():
