@@ -13,13 +13,12 @@ class PollHandler:
 
     If the poll has time, then it will refresh every REFRESH_RATE seconds value given in 
     default_values.py the message with the poll with the time left for voting. For that purpose, 
-    the interval will be created using rx. See more details on Reactive Programming for this (variables
-    ob and sub). For editing the message, a new thread will be created each time, so do not block 
+    the interval will be created using rx. See more details on Reactive Programming for this (variable sub). 
+    For editing the message, a new thread will be created each time, so do not block 
     the main thread (variable _loop)
 
     Attributes:
         poll(PollModel):    Object with the poll
-        ob(Observable):     USELESS - Will be removed
         sub(Observable):    Observable with the interval. Every REFRESH_RATE seconds will produce a value 
         _loop(Observable):  Current event loop. See more details in asyncio. We will use it to create a 
                             new thread
@@ -34,14 +33,12 @@ class PollHandler:
             poll(PollModel):    Object with the poll
         """
         # TODO check if is active
-        # TODO Remove self.ob
         self.poll = poll
 
         if self.poll.duration == -1:
             return
 
-        self.ob = rx.interval(REFRESH_RATE)
-        self.sub = self.ob.pipe(
+        self.sub = rx.interval(REFRESH_RATE).pipe(
             # Seconds that the poll will last
             op.take_until_with_time(self.poll.duration)
         )
