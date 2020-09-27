@@ -11,22 +11,22 @@ CLOCKS_EMOJI = [f":clock{hour}:" for hour in range(1, 13)]
 class PollHandler:
     """This class will handle the poll
 
-    If the poll has time, then it will refresh every REFRESH_RATE seconds value given in 
-    default_values.py the message with the poll with the time left for voting. For that purpose, 
-    the interval will be created using rx. See more details on Reactive Programming for this (variable sub). 
-    For editing the message, a new thread will be created each time, so do not block 
+    If the poll has time, then it will refresh every REFRESH_RATE seconds value given in
+    default_values.py the message with the poll with the time left for voting. For that purpose,
+    the interval will be created using rx. See more details on Reactive Programming for this (variable sub).
+    For editing the message, a new thread will be created each time, so do not block
     the main thread (variable _loop)
 
     Attributes:
         poll(PollModel):    Object with the poll
-        sub(Observable):    Observable with the interval. Every REFRESH_RATE seconds will produce a value 
-        _loop(Observable):  Current event loop. See more details in asyncio. We will use it to create a 
+        sub(Observable):    Observable with the interval. Every REFRESH_RATE seconds will produce a value
+        _loop(Observable):  Current event loop. See more details in asyncio. We will use it to create a
                             new thread
     """
 
     def __init__(self, poll: PollModel):
         """
-        Initializes the class. If there is no duration for the poll or is inactive, it only will initialize 
+        Initializes the class. If there is no duration for the poll or is inactive, it only will initialize
         with the poll attribute
 
         Attributes:
@@ -38,14 +38,14 @@ class PollHandler:
         if self.poll.duration == -1:
             return
 
+        # Use for avoid waiting to edit message
+        # https://stackoverflow.com/questions/53722398/how-to-send-a-message-with-discord-py-from-outside-the-event-loop-i-e-from-pyt
+        self._loop = asyncio.get_event_loop()
+
         self.sub = rx.interval(REFRESH_RATE).pipe(
             # Seconds that the poll will last
             op.take_until_with_time(self.poll.duration)
         )
-
-        # Use for avoid waiting to edit message
-        # https://stackoverflow.com/questions/53722398/how-to-send-a-message-with-discord-py-from-outside-the-event-loop-i-e-from-pyt
-        self._loop = asyncio.get_event_loop()
 
         self.subscribe()
 
@@ -56,7 +56,8 @@ class PollHandler:
         reaction. Any other reaction will be removed.
         """
         # Sends the poll
-        self.poll.bot_message = await self.poll.user_message.channel.send(str(self.poll))
+        poll_str = self.__get_msg(-1)
+        self.poll.bot_message = await self.poll.user_message.channel.send(poll_str)
 
         # Reacts to the message with the different emojis associated to the options
         [await self.poll.bot_message.add_reaction(emoji) for emoji in self.poll.get_reaction_emojis()]
@@ -72,11 +73,23 @@ class PollHandler:
             on_completed=self.__on_completed
         )
 
+    def __get_msg(self, i):
+        """It will create the message to send to the user
+
+        Args:
+            i(number): Number of the iteration
+        """
+        seconds_left = int(self.poll.created_at +
+                           self.poll.duration - time.time())
+        seconds_left = 5 * round(seconds_left / 5)  # Round seconds to 0 or 5
+        poll_str = f"{str(self.poll)}\n\n{CLOCKS_EMOJI[i % 12]}  La votación cierra en {self.seconds2str(seconds_left)}"
+        return poll_str
+
     def __on_next(self, i):
         """It will update the message with the poll with the time left.
 
         It will calculate the time left rounded to 0 or 5 seconds and then will use seconds2str() to create a more
-        radeble version of the time. Then it will create the message with the original content of the message. with
+        readable version of the time. Then it will create the message with the original content of the message. with
         a small animation of a clock moving the clock hands each iteration. For editting the message, the __edit_msg
         function will be used
 
@@ -85,10 +98,7 @@ class PollHandler:
         """
         # TODO Change is_active lifecycle
         self.poll.is_active = True
-        seconds_left = int(self.poll.created_at +
-                           self.poll.duration - time.time())
-        seconds_left = 5 * round(seconds_left / 5)  # Round seconds to 0 or 5
-        poll_str = f"{str(self.poll)}\n\n{CLOCKS_EMOJI[i % 12]}  La votación cierra en {self.seconds2str(seconds_left)}"
+        poll_str = self.__get_msg(i)
         self.__edit_msg(poll_str)
 
     def __on_error(self, iteration):
