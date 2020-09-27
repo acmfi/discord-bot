@@ -1,4 +1,6 @@
 import time
+from src.extensions.logic.poll.flags import PollFlagsCommand
+from src.extensions.logic.poll.default_values import DEFAULT_DURATION
 
 
 class PollModel:
@@ -41,14 +43,12 @@ class PollModel:
         time_flag = list(
             filter(lambda flag: flag.argument == "time", self.flags))
         if len(time_flag) == 0:
+            # Check if no-time flag is set
             no_time_flag = list(
                 filter(lambda flag: flag.argument == "no-time", self.flags))
-            if len(no_time_flag) == 0:
-                # TODO
-                # self.duration = parse_flag_value("time", DEFAULT_DURATION)
-                self.duration = 60
-            else:
-                self.duration = -1
+            # If no-time flag is set, duration is -1 otherwise we use default value for duration for the poll
+            self.duration = PollFlagsCommand.parse_flag_value(None,
+                                                              "time", DEFAULT_DURATION) if len(no_time_flag) == 0 else -1
         else:
             self.duration = time_flag[0].value
 
