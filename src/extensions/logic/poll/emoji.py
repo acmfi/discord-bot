@@ -12,7 +12,7 @@ NUMBER_EMOJIS = {
 }
 
 
-class Emoji:
+class EmojiOption:
     """
     An emoji class will contain useful information about the emojis used for the options.
     It will have two attributes:
@@ -45,7 +45,7 @@ class Emoji:
             index(int): The number which the emoji will have. Between 0 and 9
 
         Returns:
-            Emoji: The object itself
+            EmojiOption: The object itself
         """
         if index < 0 or index > 9:
             raise InvalidOptionException(
@@ -59,10 +59,10 @@ class Emoji:
         Compare if `other` contains the same values as `self`
 
         Args:
-            other (Emoji): Object which the self object will be compared to.
+            other (EmojiOption): Object which the self object will be compared to.
 
         Returns:
             boolean: True if both objects contain the same values. False otherwise.
         """
-        if isinstance(other, Emoji):
+        if isinstance(other, EmojiOption):
             return self.short == other.short and self.unicode == other.unicode

@@ -1,4 +1,4 @@
-from src.extensions.logic.poll.emoji import Emoji
+from src.extensions.logic.poll.emoji import EmojiOption
 
 
 class PollOption:
@@ -7,12 +7,12 @@ class PollOption:
 
     Attributes
         option_str(string): The content of the option
-        emoji(Emoji):       Emoji object associated to the option
+        emoji(EmojiOption):       EmojiOption object associated to the option
     """
 
     def __init__(self, option_str):
         """
-        It will create the option object without the emojis. Emojis will be initialized using 
+        It will create the option object without the emojis. EmojiOptions will be initialized using 
         set_keycap_emoji(for numbers) or set_yesno_emoji(for tick/cross)
 
         Args:
@@ -32,7 +32,7 @@ class PollOption:
         Returns:
             PollOption: The object itself
         """
-        self.emoji = Emoji().number(index - 1)
+        self.emoji = EmojiOption().number(index - 1)
         return self
 
     def set_yesno_emoji(self, emoji_type):
@@ -47,9 +47,9 @@ class PollOption:
         """
         # TODO Raise expcetion if emoji_type != tick or cross
         if emoji_type == "tick":
-            self.emoji = Emoji().specific(":white_check_mark:", '\U00002705')
+            self.emoji = EmojiOption().specific(":white_check_mark:", '\U00002705')
         elif emoji_type == "cross":
-            self.emoji = Emoji().specific(":x:", '\U0000274c')
+            self.emoji = EmojiOption().specific(":x:", '\U0000274c')
         return self
 
     def __str__(self):

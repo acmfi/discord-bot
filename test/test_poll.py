@@ -8,7 +8,7 @@ from src.extensions.logic.poll.flags import PollFlagsCommand
 from src.extensions.logic.poll.handler import PollHandler
 from src.extensions.logic.poll.multiple_option import MultipleOptionPollModel
 from src.extensions.logic.poll.yesorno import YesOrNoPollModel
-from src.extensions.logic.poll.emoji import Emoji, NUMBER_EMOJIS
+from src.extensions.logic.poll.emoji import EmojiOption, NUMBER_EMOJIS
 
 
 class CleanContent:
@@ -190,7 +190,7 @@ def test_create_option2():
     option_str = "This is an option"
     option = PollOption(option_str).set_keycap_emoji(3)
     expected = PollOption(option_str)
-    expected.emoji = Emoji().number(2)
+    expected.emoji = EmojiOption().number(2)
     assert option == expected
 
 
@@ -199,7 +199,7 @@ def test_create_option3():
     option = PollOption(option_str).set_yesno_emoji("tick")
     expected = PollOption
     expected.option_str = option_str
-    expected.emoji = Emoji().specific(":white_check_mark:", '\U00002705')
+    expected.emoji = EmojiOption().specific(":white_check_mark:", '\U00002705')
     assert option == expected
 
 
@@ -208,7 +208,7 @@ def test_create_option4():
     option = PollOption(option_str).set_yesno_emoji("cross")
     expected = PollOption
     expected.option_str = option_str
-    expected.emoji = Emoji().specific(":x:", '\U0000274c')
+    expected.emoji = EmojiOption().specific(":x:", '\U0000274c')
     assert option == expected
 
 
