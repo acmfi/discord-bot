@@ -1,16 +1,29 @@
-import discord
 from discord.ext import commands
+from multiprocessing import Process, Queue, Pipe
+from apiserver import ApiServer
+import json
 import os
 
+bot = commands.Bot(command_prefix='!')
+with open('src/bot_conf.json', 'r') as conf_file:
+    bot.CONF = json.load(conf_file)
 
 bot = commands.Bot(command_prefix='¡')
 
-with open('src/token.txt', 'r') as token_file:
-    TOKEN = token_file.read()
+@bot.event
+async def on_ready():
+    print('------------------')
+    print('Logged in as')
+    print(bot.user.name)
+    print(bot.user.id)
+    print('------------------')
 
-
-for file in os.listdir('src/extensions'):
-    if file.endswith('.py'):
-        bot.load_extension(f'extensions.{file[:-3]}')
-
-bot.run(TOKEN)
+bot.post_queue = Queue()
+bot.link_task_queue = (Queue(), Queue())
+apiserver = ApiServer(bot.post_queue, bot.link_task_queue)
+apiserver.start()
+bot.load_extension('extensions.resendpost')
+bot.load_extension('extensions.protection_link')
+bot.load_extension('extensions.dynamic-channels')
+bot.load_extension('extensions.welcome')
+bot.run(bot.CONF["token"])

@@ -1,4 +1,3 @@
-# discord-bot
 Discord bot developed during summer 2020 as a summer project :D
 
 ## Introducción
@@ -13,6 +12,7 @@ Este bot esta desarrollado con la intención de automatizar y facilitar la gesti
 [@jonsalchichonnn](https://github.com/jonsalchichonnn)
 [@xiaopeng-ye](https://github.com/xiaopeng-ye)
 [@JustAntoRS](https://github.com/JustAntoRS)
+[@juan-vmarin](https://github.com/juan-vmarin)
 
 ## Como colaborar
 (Debes ser miembro del equipo discord-bot en la org acmfi)
@@ -38,6 +38,28 @@ pipenv install
 pipenv run python3 src/bot.py
 ```
 
+## Configuración del bot
+Crear y modificar el fichero src/bot_conf.json con la siguiente forma, consulte la siguiente [página](https://support.discord.com/hc/es/articles/206346498--D%C3%B3nde-puedo-encontrar-mi-ID-de-usuario-servidor-mensaje-) para encontrar el ID de tu canal.
+
+```json
+{
+    "token": "token del bot de discord",
+    "channels_id": [
+        "Primer ID (id de los canales que desean recibir avisos enviados por el canal de telegram)",
+        "Segundo ID"
+    ],
+    "api_users": [
+        {
+            "username": "nombre de usuario 1 (array de todo los usuarios que puedan usar el API)",
+            "password": "contraseña"
+        },
+        {
+            "username": "nombre de usuario 2",
+            "password": "contraseña 2"
+        }
+    ]
+}
+```
 
 
 
