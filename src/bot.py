@@ -2,11 +2,13 @@ from discord.ext import commands
 from multiprocessing import Process, Queue, Pipe
 from apiserver import ApiServer
 import json
+import os
 
 bot = commands.Bot(command_prefix='!')
 with open('src/bot_conf.json', 'r') as conf_file:
     bot.CONF = json.load(conf_file)
 
+bot = commands.Bot(command_prefix='¡')
 
 @bot.event
 async def on_ready():
@@ -23,4 +25,5 @@ apiserver.start()
 bot.load_extension('extensions.resendpost')
 bot.load_extension('extensions.protection_link')
 bot.load_extension('extensions.dynamic-channels')
+bot.load_extension('extensions.welcome')
 bot.run(bot.CONF["token"])
