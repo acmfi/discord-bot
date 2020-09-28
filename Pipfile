@@ -5,13 +5,13 @@ verify_ssl = true
 
 [dev-packages]
 autopep8 = "*"
-pytest = "*"
 
 [packages]
 discord = "*"
+pytest = "*"
 flask = "*"
 requests = "*"
-pyjwt = "*"
+jwt = "*"
 
 [requires]
 python_version = "3.8"
