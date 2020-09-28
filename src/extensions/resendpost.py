@@ -4,7 +4,7 @@ import base64
 
 
 def setup(bot):
-    """fuction to init this extension file, called in the main
+    """function to init this extension file, called in the main
 
     Args:
         bot (discord.Bot): main bot
