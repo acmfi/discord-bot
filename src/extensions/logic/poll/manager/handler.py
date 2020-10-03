@@ -85,7 +85,6 @@ class PollHandler:
         time_str = f"*{CLOCKS_EMOJI[i % 12]}  La votación cierra en {self.seconds2str(seconds_left)}*"
         poll_str = str(self.poll).replace(
             "'''time_str_line'''", time_str.rjust(len(time_str) + 5))
-        print(poll_str, len(self.poll.question))
         return poll_str
 
     def __on_next(self, i):
@@ -113,7 +112,10 @@ class PollHandler:
         It will update the message with the poll: "Poll has ended" and some emojis
         """
         self.poll.is_active = False
-        poll_str = f"{str(self.poll)}\n\n:male_dancer::dancer:  La votación ha terminado  :male_dancer::dancer:"
+        time_str = ":male_dancer::dancer:  La votación ha terminado  :male_dancer::dancer:"
+        poll_str = str(self.poll).replace("'''time_str_line'''\n", "")
+        poll_str = poll_str.replace(
+            "Responda", time_str.rjust(len(time_str) + 5))
         self.__edit_msg(poll_str)
 
     def __edit_msg(self, msg):
