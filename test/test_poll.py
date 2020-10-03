@@ -2,13 +2,13 @@ import pytest
 
 from src.extensions.logic.exceptions.exceptions import InvalidFlagException, InvalidInputException, InvalidOptionException
 from src.extensions.logic.poll.command import PollCommand
-from src.extensions.logic.poll.model import PollModel
-from src.extensions.logic.poll.option import PollOption
-from src.extensions.logic.poll.flags import PollFlagsCommand
-from src.extensions.logic.poll.handler import PollHandler
-from src.extensions.logic.poll.multiple_option import MultipleOptionPollModel
-from src.extensions.logic.poll.yesorno import YesOrNoPollModel
-from src.extensions.logic.poll.emoji import EmojiOption, NUMBER_EMOJIS
+from src.extensions.logic.poll.model.model import PollModel
+from src.extensions.logic.poll.model.option import PollOption
+from src.extensions.logic.poll.model.flags import PollFlagsCommand
+from src.extensions.logic.poll.manager.handler import PollHandler
+from src.extensions.logic.poll.model.multiple_option import MultipleOptionPollModel
+from src.extensions.logic.poll.model.yesorno import YesOrNoPollModel
+from src.extensions.logic.poll.model.emoji import EmojiOption, NUMBER_EMOJIS
 
 
 class CleanContent:
@@ -57,11 +57,6 @@ def test_parser1():
     poll, _, expected_poll = get_variables(
         "This is a question", ["Option 1", "Option 2"])
     assert poll == expected_poll
-
-    expected_str = "**This is a question**\n\n" \
-                   ":zero:   Option 1\n" \
-                   ":one:   Option 2"
-    assert expected_poll.poll_str == expected_str
 
 
 def test_parser2():

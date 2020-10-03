@@ -1,5 +1,5 @@
-from src.extensions.logic.poll.model import PollModel
-from src.extensions.logic.poll.option import PollOption
+from src.extensions.logic.poll.model.model import PollModel
+from src.extensions.logic.poll.model.option import PollOption
 
 
 class MultipleOptionPollModel(PollModel):

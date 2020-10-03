@@ -1,5 +1,5 @@
 from discord.ext import commands
-from src.extensions.logic.poll.manager import PollManager
+from src.extensions.logic.poll.manager.manager import PollManager
 from src.extensions.logic.poll.command import PollCommand
 from src.extensions.logic.exceptions.exceptions import InvalidInputException, InvalidFlagException
 

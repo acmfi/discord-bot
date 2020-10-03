@@ -1,5 +1,5 @@
 import time
-from src.extensions.logic.poll.flags import PollFlagsCommand
+from src.extensions.logic.poll.model.flags import PollFlagsCommand
 from src.extensions.logic.poll.default_values import DEFAULT_DURATION
 
 

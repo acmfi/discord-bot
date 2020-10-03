@@ -2,9 +2,9 @@ import getopt
 
 from src.extensions.logic.exceptions.exceptions import InvalidFlagException, InvalidInputException
 from src.extensions.logic.lib.command import Command
-from src.extensions.logic.poll.flags import PollFlagsCommand
-from src.extensions.logic.poll.multiple_option import MultipleOptionPollModel
-from src.extensions.logic.poll.yesorno import YesOrNoPollModel
+from src.extensions.logic.poll.model.flags import PollFlagsCommand
+from src.extensions.logic.poll.model.multiple_option import MultipleOptionPollModel
+from src.extensions.logic.poll.model.yesorno import YesOrNoPollModel
 
 
 class PollCommand(Command):

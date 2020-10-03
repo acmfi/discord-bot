@@ -1,5 +1,5 @@
 from src.extensions.logic.exceptions.exceptions import InvalidOptionException
-from src.extensions.logic.poll.emoji import EmojiOption
+from src.extensions.logic.poll.model.emoji import EmojiOption
 
 
 class PollOption:

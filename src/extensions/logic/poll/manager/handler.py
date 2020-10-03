@@ -2,7 +2,7 @@ import rx
 from rx import operators as op
 import time
 import asyncio
-from src.extensions.logic.poll.model import PollModel
+from src.extensions.logic.poll.model.model import PollModel
 from src.extensions.logic.poll.default_values import REFRESH_RATE
 
 CLOCKS_EMOJI = [f":clock{hour}:" for hour in range(1, 13)]

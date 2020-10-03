@@ -1,4 +1,4 @@
-from src.extensions.logic.poll.handler import PollHandler
+from src.extensions.logic.poll.manager.handler import PollHandler
 
 
 class PollManager:
