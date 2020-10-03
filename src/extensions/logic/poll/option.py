@@ -1,3 +1,4 @@
+from src.extensions.logic.exceptions.exceptions import InvalidOptionException
 from src.extensions.logic.poll.emoji import EmojiOption
 
 
@@ -45,11 +46,12 @@ class PollOption:
         Returns:
             PollOption: The object itself
         """
-        # TODO Raise expcetion if emoji_type != tick or cross
         if emoji_type == "tick":
             self.emoji = EmojiOption().specific(":white_check_mark:", '\U00002705')
         elif emoji_type == "cross":
             self.emoji = EmojiOption().specific(":x:", '\U0000274c')
+        else:
+            raise InvalidOptionException("Invalid emoji. Only tick or cross")
         return self
 
     def __str__(self):
