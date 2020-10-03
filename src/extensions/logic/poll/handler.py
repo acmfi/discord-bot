@@ -82,7 +82,10 @@ class PollHandler:
         seconds_left = int(self.poll.created_at +
                            self.poll.duration - time.time())
         seconds_left = 5 * round(seconds_left / 5)  # Round seconds to 0 or 5
-        poll_str = f"{str(self.poll)}\n\n{CLOCKS_EMOJI[i % 12]}  La votación cierra en {self.seconds2str(seconds_left)}"
+        time_str = f"*{CLOCKS_EMOJI[i % 12]}  La votación cierra en {self.seconds2str(seconds_left)}*"
+        poll_str = str(self.poll).replace(
+            "'''time_str_line'''", time_str.rjust(len(time_str) + 5))
+        print(poll_str, len(self.poll.question))
         return poll_str
 
     def __on_next(self, i):
@@ -98,6 +101,7 @@ class PollHandler:
         """
         # TODO Change is_active lifecycle
         self.poll.is_active = True
+
         poll_str = self.__get_msg(i)
         self.__edit_msg(poll_str)
 

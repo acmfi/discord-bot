@@ -59,10 +59,11 @@ class PollModel:
         Returns:
             string: The poll in string format
         """
-
-        question = f"**{self.question}**"
+        #horizontal_line = "-" * int(len(self.question) * 1)
+        #question = f"~~{horizontal_line}~~\n**{self.question}**\n~~{horizontal_line}~~\n"
+        question = f"**{self.question}**\n"
         options = "\n".join([str(o) for o in self.options])
-        self.poll_str = f"{question}\n\n{options}"
+        self.poll_str = f"{question}'''time_str_line'''\n\n{options}\n\nResponda"
 
     def get_log(self):
         return f"Log: New poll. Question: {self.question}. Options: {[o.content for o in self.options]}"
