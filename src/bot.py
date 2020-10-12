@@ -6,7 +6,7 @@ class Bot:
     def __init__(self):
         self.bot = commands.Bot(command_prefix='!')
         with open('token.txt', 'r') as token_file:
-            self.TOKEN = token_file.read()
+            self.token = token_file.read()
 
     async def on_ready(self):
         print('Logged in as')
@@ -17,7 +17,7 @@ class Bot:
     def run(self):
         self.bot.add_listener(self.on_ready)
         self.bot.load_extension('Extensions.view.voice_control_view')
-        self.bot.run(self.TOKEN)
+        self.bot.run(self.token)
 
 
 # Hay que crear un archivo script
