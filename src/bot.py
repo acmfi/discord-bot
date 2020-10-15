@@ -1,14 +1,12 @@
 from discord.ext import commands
-from multiprocessing import Process, Queue, Pipe
+from multiprocessing import Queue
 from apiserver import ApiServer
 import json
-import os
 
 bot = commands.Bot(command_prefix='!')
 with open('src/bot_conf.json', 'r') as conf_file:
     bot.CONF = json.load(conf_file)
 
-bot = commands.Bot(command_prefix='¡')
 
 @bot.event
 async def on_ready():

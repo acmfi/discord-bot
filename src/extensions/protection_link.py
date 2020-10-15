@@ -32,12 +32,6 @@ class ProtectionLink(commands.Cog):
     async def send_invitation_link(self):
         """when it receive some signal from Connection it will prepare the invitation link and send with same way
         """
-        # try:
-        #     await self.bot.loop.run_in_executor(None, self.link_connection.recv)
-        #     await self.bot.loop.run_in_executor(None, self.link_connection.send, "https://discord.gg/BW2Cjn")
-        # except:
-        #     print("fallo await")
-
         frame_available = asyncio.Event()
         asyncio.get_event_loop().add_reader(
             self.bot.link_task_queue[0]._reader.fileno(), frame_available.set)

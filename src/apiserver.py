@@ -79,7 +79,6 @@ class ApiServer(Process):
         @wraps(f)
         def decorated(*args, **kwargs):
             token = request.args.get('token')
-            print(token)
             if not token:
                 return jsonify({'message': 'Token is missing'}), 403
 
