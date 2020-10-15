@@ -4,11 +4,15 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+autopep8 = "*"
 
 [packages]
 discord = "*"
 pytest = "*"
 coverage = "*"
+flask = "*"
+requests = "*"
+jwt = "*"
 
 [requires]
 python_version = "3.8"
