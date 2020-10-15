@@ -9,6 +9,7 @@ autopep8 = "*"
 [packages]
 discord = "*"
 pytest = "*"
+coverage = "*"
 flask = "*"
 requests = "*"
 jwt = "*"
